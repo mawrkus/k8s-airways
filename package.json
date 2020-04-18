@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "start:projects": "node index-projects.js"
+    "start:projects": "node index.projects.js"
   },
   "dependencies": {
     "blessed": "^0.1.81",

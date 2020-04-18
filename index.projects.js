@@ -3,11 +3,11 @@ const dayjs = require('dayjs');
 const UI = require('./UI');
 const uiConfig = require('./config/ui-projects');
 
-const K8sCommandsProjects = require('./K8sCommands-projects');
+const K8sCommandsForProjects = require('./K8sCommandsForProjects');
 const projects = require('./config/k8s-projects');
 
 const ui = new UI(uiConfig);
-const k8sCommands = new K8sCommandsProjects();
+const k8sCommands = new K8sCommandsForProjects();
 
 ui.on('item:select', async ({ list, index, value }) => {
   const nextIndex = index + 1;
