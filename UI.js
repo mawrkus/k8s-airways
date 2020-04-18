@@ -51,6 +51,9 @@ class UI extends EventEmitter {
 
   setListItems(index, items) {
     this.debug('UI.setListItems', index, items);
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
 
     for (let i = index + 1; i < this.lists.length; i += 1) {
       this.lists[i].widget.clearItems();
@@ -63,7 +66,6 @@ class UI extends EventEmitter {
 
   focusOnList(index) {
     this.debug('UI.focusOnList', index);
-
     if (index < 0 || index >= this.lists.length) {
       return;
     }
