@@ -1,0 +1,24 @@
+{
+  "lists": [
+    { "name": "contexts" },
+    { "name": "namespaces" },
+    { "name": "releases" },
+    { "name": "revisions" }
+  ],
+  "colors": {
+    "list": {
+      "focus": "#ffffff",
+      "blur": "#555555"
+    },
+    "scrollbar": {
+      "bg": "#ffffff"
+    },
+    "item": {
+      "fg": "green",
+      "selected": {
+        "fg": "#ffffff",
+        "bg": "green"
+      }
+    }
+  }
+}

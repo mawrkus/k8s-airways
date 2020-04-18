@@ -1,8 +1,10 @@
 const blessed = require('blessed');
 const EventEmitter = require('events');
 
+const config = require('./config/ui');
+
 class UI extends EventEmitter {
-  constructor() {
+  constructor(options) {
     super();
 
     this.screen = null;
@@ -11,21 +13,9 @@ class UI extends EventEmitter {
     this.messageBox = null;
     this.currentFocusedList = null;
 
-    this.colors = {
-      list: {
-        focus: '#ffffff',
-        blur: '#777777',
-      },
-      scrollbar: {
-        bg: '#ffffff',
-      },
-      item: {
-        fg: '#00ff00',
-        selected: {
-          fg: '#ffffff',
-          bg: '#00ff00',
-        },
-      },
+    this.options = {
+      ...config,
+      ...options,
     };
 
     this.create();
@@ -133,18 +123,7 @@ class UI extends EventEmitter {
 
   create() {
     this.screen = this.createScreen();
-
-    [
-      'contexts',
-      'namespaces',
-      'releases',
-      'revisions',
-    ].forEach((name, index) => {
-      const widget = this.createColumn({ name, left: `${index * 25 }%` });
-      this.lists.push({ name, widget, index });
-      this.screen.append(widget);
-    });
-
+    this.lists = this.createLists();
     this.loader = this.createLoader();
     this.messageBox = this.createErrorBox();
   }
@@ -161,6 +140,14 @@ class UI extends EventEmitter {
     return screen;
   }
 
+  createLists() {
+    return this.options.lists.map(({ name }, index) => {
+      const widget = this.createColumn({ name, left: `${index * 25 }%` });
+      this.screen.append(widget);
+      return { name, widget, index };
+    });
+  }
+
   createColumn(options) {
     return blessed.List({
       name: '?',
@@ -173,22 +160,22 @@ class UI extends EventEmitter {
       vi: false,
       border: {
         type: 'line',
-        fg: this.colors.list.blur,
+        fg: this.options.colors.list.blur,
       },
       scrollbar: {
-        bg: this.colors.scrollbar.bg,
+        bg: this.options.colors.scrollbar.bg,
       },
       style: {
         item: {
-          fg: this.colors.item.fg,
+          fg: this.options.colors.item.fg,
         },
         selected: {
-          fg: this.colors.item.selected.fg,
-          bg: this.colors.item.selected.bg,
+          fg: this.options.colors.item.selected.fg,
+          bg: this.options.colors.item.selected.bg,
         },
         focus: {
           border: {
-            fg: this.colors.list.focus,
+            fg: this.options.colors.list.focus,
           },
         },
       },

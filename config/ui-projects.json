@@ -1,0 +1,24 @@
+{
+  "lists": [
+    { "name": "projects" },
+    { "name": "releases" },
+    { "name": "revisions" },
+    { "name": "rollbacks" }
+  ],
+  "colors": {
+    "list": {
+      "focus": "#ffffff",
+      "blur": "#555555"
+    },
+    "scrollbar": {
+      "bg": "#ffffff"
+    },
+    "item": {
+      "fg": "blue",
+      "selected": {
+        "fg": "#ffffff",
+        "bg": "blue"
+      }
+    }
+  }
+}
