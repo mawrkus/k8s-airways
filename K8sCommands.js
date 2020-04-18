@@ -9,8 +9,12 @@ class K8sCommands {
     this.currentRevision = null;
   }
 
-  exec(command) {
+  exec(command, timeoutInMs = 10000) {
     return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        reject(new Error(`Operation timed out after ${timeoutInMs}ms!`))
+      }, timeoutInMs);
+
       shell.exec(command, { silent: true, fatal: true }, (code, stdout, stderr) => {
         if (stderr) {
           return reject(stderr);

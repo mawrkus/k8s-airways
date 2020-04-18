@@ -63,5 +63,10 @@ ui.on('item:select', async ({ list, index, value }) => {
 
 (async () => {
   ui.showListLoader(0, 'Loading contexts...');
-  ui.setListItems(0, await k8sCommands.listContexts());
+
+  try {
+    ui.setListItems(0, await k8sCommands.listContexts());
+  } catch(e) {
+    ui.showListError(0, e);
+  }
 })();

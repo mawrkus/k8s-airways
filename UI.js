@@ -116,7 +116,7 @@ class UI extends EventEmitter {
 
     this.hideListLoader(index);
 
-    if (type === 'error'){
+    if (type === 'error') {
       this.messageBox.error(message, 3, callback);
     } else {
       this.messageBox.log(message, 3, callback);
