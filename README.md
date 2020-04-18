@@ -5,8 +5,9 @@ A terminal application to make Kubernetes rollbacks easy.
 ## ✈️  Installation & usage
 
 ```shell
-npm -g k8s-airways
-k8s-airways
+git clone https://github.com/mawrkus/k8s-airways.git
+cd k8s-airways
+npm install && npm run start
 ```
 
 ## ✈️  Contribute
