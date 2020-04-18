@@ -58,7 +58,7 @@ class K8sCommands {
         const date = updated
           ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
           : '?';
-        return `${date} -> v${app_version || '?'} (${revision})`;
+        return `${date} -> ${release} v${app_version || '?'} (${revision})`;
       });
   }
 

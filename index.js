@@ -42,12 +42,16 @@ ui.on('item:select', async ({ list, index, value }) => {
       break;
 
     case 'revisions':
-      ui.showListLoader(nextIndex, 'Rolling back...');
+      const [, revision] = value.match(/\((.+)\)$/);
+      ui.showListLoader(index, `Rolling back to revision "${revision}"...`);
 
       try {
-        await k8sCommands.rollback(value);
+        // TODO: result=?
+        const result = await k8sCommands.rollback(revision);
+        ui.showListMessage(index, `Rollback to revision "${revision}" complete!`);
+        ui.focusOnList(index - 1);
       } catch(e) {
-        ui.showListError(nextIndex, e);
+        ui.showListError(index, e);
       }
       break;
 
