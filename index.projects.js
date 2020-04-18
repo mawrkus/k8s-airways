@@ -41,10 +41,10 @@ ui.on('item:select', async ({ list, index, value }) => {
             return;
           }
 
-          [1, 2, 3]
-            .filter((n) => revisions[revisions.length - n])
+          [0, 1, 2]
+            .filter((n) => revisions[n])
             .forEach((n) => prettyRevisions.push(
-              formatRevision(revisions[revisions.length - n], context)),
+              formatRevision(revisions[n], context)),
             );
         });
 
@@ -67,8 +67,8 @@ ui.on('item:select', async ({ list, index, value }) => {
       try {
         k8sCommands.setContext(context);
         await k8sCommands.rollback(revision);
+
         ui.showListMessage(nextIndex, `Rollback to revision "${revision}" completed in "${context}"!`);
-        ui.focusOnList(index);
       } catch(e) {
         ui.showListError(nextIndex, e);
       }

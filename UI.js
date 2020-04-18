@@ -119,6 +119,7 @@ class UI extends EventEmitter {
 
   showListError(index, error) {
     this.showListMessage(index, error, null, 'error');
+    this.focusOnList(index); // will also force render so that the message is visible
   }
 
   create() {
