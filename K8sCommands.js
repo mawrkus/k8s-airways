@@ -21,59 +21,45 @@ class K8sCommands {
   }
 
   async listContexts() {
-    try {
-      const stdout = await this.exec('kubectx');
-      return stdout.split('\n').filter(Boolean);
-    } catch(e) {
-      return [];
-    }
+    const stdout = await this.exec('kubectx');
+    return stdout.split('\n').filter(Boolean);
   }
 
   async listNamespaces(context) {
-    try {
-      await this.exec(`kubectx ${context}`);
-      this.currentContext = context;
+    await this.exec(`kubectx ${context}`);
+    this.currentContext = context;
 
-      const stdout = await this.exec('kubens');
-      return stdout.split('\n').filter(Boolean);
-    } catch(e) {
-      return [];
-    }
+    const stdout = await this.exec('kubens');
+    return stdout.split('\n').filter(Boolean);
   }
 
   async listReleases(namespace) {
-    try {
-      const command = `helm ls --kube-context ${this.currentContext} --namespace ${namespace} -o json`;
-      const stdout = await this.exec(command);
-      this.currentNamespace = namespace;
+    const command = `helm ls --kube-context ${this.currentContext} --namespace ${namespace} -o json`;
+    const stdout = await this.exec(command);
 
-      const releases = JSON.parse(stdout);
-      return releases.map(({ name }) => name);
-    } catch(e) {
-      return [];
-    }
+    this.currentNamespace = namespace;
+
+    const releases = JSON.parse(stdout);
+    return releases.map(({ name }) => name);
   }
 
   async listRevisions(release) {
-    try {
-      const command = `helm history ${release} --kube-context ${this.currentContext} --namespace ${this.currentNamespace} --max 100 -o json`;
-      const stdout = await this.exec(command);
-      this.currentRelease = release;
+    const command = `helm history ${release} --kube-context ${this.currentContext} --namespace ${this.currentNamespace} --max 100 -o json`;
+    const stdout = await this.exec(command);
 
-      const versions = JSON.parse(stdout);
+    this.currentRelease = release;
 
-      return versions
-        .filter(({ description }) => description === 'Upgrade complete')
-        .sort((a, b) => b.revision - a.revision)
-        .map(({ app_version, revision, updated }) => {
-          const date = updated
-            ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
-            : '?';
-          return `${date} -> v${app_version || '?'} (${revision})`;
-        });
-    } catch(e) {
-      return [];
-    }
+    const versions = JSON.parse(stdout);
+
+    return versions
+      .filter(({ description }) => description === 'Upgrade complete')
+      .sort((a, b) => b.revision - a.revision)
+      .map(({ app_version, revision, updated }) => {
+        const date = updated
+          ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
+          : '?';
+        return `${date} -> v${app_version || '?'} (${revision})`;
+      });
   }
 
   async rollback(version) {

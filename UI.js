@@ -8,6 +8,7 @@ class UI extends EventEmitter {
     this.screen = null;
     this.lists = [];
     this.loader = null;
+    this.errorBox = null;
     this.currentFocusedList = null;
 
     this.colors = {
@@ -106,7 +107,20 @@ class UI extends EventEmitter {
     this.debug('UI > start rendering');
     this.screen.render();
     this.debug('UI > done rendering');
-	}
+  }
+
+  showListError(index, error) {
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
+
+    this.hideListLoader(index);
+    this.errorBox.error(error);
+
+    const { widget } = this.lists[index];
+    widget.clearItems();
+    widget.append(this.errorBox);
+  }
 
   create() {
     this.screen = this.createScreen();
@@ -123,6 +137,7 @@ class UI extends EventEmitter {
     });
 
     this.loader = this.createLoader();
+    this.errorBox = this.createErrorBox();
   }
 
   createScreen() {
@@ -174,6 +189,10 @@ class UI extends EventEmitter {
 
   createLoader() {
     return blessed.Loading();
+  }
+
+  createErrorBox() {
+    return blessed.Message();
   }
 }
 

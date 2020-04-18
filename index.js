@@ -7,29 +7,48 @@ const k8sCommands = new K8sCommands();
 ui.on('item:select', async ({ list, index, value }) => {
   const nextIndex = index + 1;
 
-
   switch(list) {
     case 'contexts':
       ui.showListLoader(nextIndex, 'Loading namespaces...');
-      const namespaces = await k8sCommands.listNamespaces(value);
-      ui.setListItems(nextIndex, namespaces);
+
+      try {
+        const namespaces = await k8sCommands.listNamespaces(value);
+        ui.setListItems(nextIndex, namespaces);
+      } catch(e) {
+        ui.showListError(nextIndex, e);
+      }
       break;
 
     case 'namespaces':
       ui.showListLoader(nextIndex, 'Loading releases...');
-      const releases = await k8sCommands.listReleases(value);
-      ui.setListItems(nextIndex, releases);
+
+      try {
+        const releases = await k8sCommands.listReleases(value);
+        ui.setListItems(nextIndex, releases);
+      } catch(e) {
+        ui.showListError(nextIndex, e);
+      }
       break;
 
     case 'releases':
       ui.showListLoader(nextIndex, 'Loading revisions...');
-      const revisions = await k8sCommands.listRevisions(value);
-      ui.setListItems(nextIndex, revisions);
+
+      try {
+        const revisions = await k8sCommands.listRevisions(value);
+        ui.setListItems(nextIndex, revisions);
+      } catch(e) {
+        ui.showListError(nextIndex, e);
+      }
       break;
 
     case 'revisions':
       ui.showListLoader(nextIndex, 'Rolling back...');
-      await k8sCommands.rollback(value);
+
+      try {
+        await k8sCommands.rollback(value);
+      } catch(e) {
+        ui.showListError(nextIndex, e);
+      }
       break;
 
     default:
