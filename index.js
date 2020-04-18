@@ -2,13 +2,14 @@ const UI = require('./UI');
 const K8sCommands = require('./K8sCommands');
 
 const ui = new UI();
-const k8sCommands = new K8sCommands();
+const k8sCommands = new K8sCommands({ debug: ui.debug.bind(ui) });
 
 ui.on('item:select', ({ list, index, value }) => {
   const nextIndex = index + 1;
   let items = [];
 
-  ui.setListItems(nextIndex, ['Loading...']);
+  // TODO: make this work
+  // ui.setListItems(nextIndex, ['Loading...']);
 
   switch(list) {
     case 'contexts':

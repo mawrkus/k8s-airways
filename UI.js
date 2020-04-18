@@ -24,18 +24,24 @@ class UI extends EventEmitter {
 
     this.lists.forEach(({ name, widget }, index) => {
       widget.on('select', function() {
-        self.debug('select', index, name);
+        self.debug('select', name, `"${this.value}"`);
         self.emit('item:select', { list: name, index, value: this.value });
       });
     });
   }
 
   setListItems(index, items) {
-    this.debug('setListItems', index, items);
+    this.debug('UI', 'setListItems', index, items);
+
+    for (let i = index; i < this.lists.length; i += 1) {
+      this.lists[i].widget.clearItems();
+    }
+
     const { widget } = this.lists[index];
     widget.setItems(items);
     this.render();
-    this.debug('render done');
+
+    this.debug('UI', 'done rendering');
   }
 
   render() {
