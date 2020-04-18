@@ -3,6 +3,8 @@ const dayjs = require('dayjs');
 const UI = require('./UI');
 const K8sCommands = require('./K8sCommands');
 
+const formatRevision = require('./helpers/formatRevision');
+
 const ui = new UI();
 const k8sCommands = new K8sCommands();
 
@@ -37,12 +39,7 @@ ui.on('item:select', async ({ list, index, value }) => {
 
       try {
         const revisions = await k8sCommands.listRevisions(value);
-
-        const prettyRevisions = revisions.map(({ app_version, revision, updated }) => {
-          const date = updated ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss') : '?';
-          return `${date} -> v${app_version || '?'} (${revision})`;
-        });
-
+        const prettyRevisions = revisions.map(r => formatRevision(r, null));
         ui.setListItems(nextIndex, prettyRevisions);
       } catch(e) {
         ui.showListError(nextIndex, e);

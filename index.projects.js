@@ -1,10 +1,10 @@
-const dayjs = require('dayjs');
-
 const UI = require('./UI');
 const uiConfig = require('./config/ui-projects');
 
 const K8sCommandsForProjects = require('./K8sCommandsForProjects');
 const projects = require('./config/k8s-projects');
+
+const formatRevision = require('./helpers/formatRevision');
 
 const ui = new UI(uiConfig);
 const k8sCommands = new K8sCommandsForProjects();
@@ -27,20 +27,21 @@ ui.on('item:select', async ({ list, index, value }) => {
       ui.showListLoader(nextIndex, 'Loading revisions...');
 
       try {
-        const revisions = await k8sCommands.listProjectRevisions(value);
+        const allRevisions = await k8sCommands.listProjectRevisions(value);
+        const prettyRevisions = [];
 
-        const prettyRevisions = revisions.map(({ context, revisions, error }) => {
+        allRevisions.forEach(({ context, revisions, error }) => {
           if (error) {
             return `[${context}] ${error}`;
           }
+
           if (!revisions[0]) {
             return `[${context}] No revisions!`;
           }
 
-          const { app_version, revision, updated } = revisions[0];
-          const date = updated ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss') : '?';
-
-          return `[${context}] ${date} -> v${app_version || '?'} (${revision})`;
+          [0, 1, 2]
+            .filter(n => revisions[n])
+            .forEach(n => prettyRevisions.push(formatRevision(revisions[n], context)));
         });
 
         ui.setListItems(nextIndex, prettyRevisions);
