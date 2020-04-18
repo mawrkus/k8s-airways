@@ -46,10 +46,8 @@ ui.on('item:select', async ({ list, index, value }) => {
       ui.showListLoader(index, `Rolling back to revision "${revision}"...`);
 
       try {
-        // TODO: result=?
-        const result = await k8sCommands.rollback(revision);
-        ui.setListItems(index, result);
-        // ui.showListMessage(index, `Rollback to revision "${revision}" complete!`);
+        await k8sCommands.rollback(revision);
+        ui.showListMessage(index, `Rollback to revision "${revision}" completed!`);
         ui.focusOnList(index - 1);
       } catch(e) {
         ui.showListError(index, e);

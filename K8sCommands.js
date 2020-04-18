@@ -9,7 +9,7 @@ class K8sCommands {
     this.currentRevision = null;
   }
 
-  exec(command, timeoutInMs = 10000) {
+  exec(command, timeoutInMs = 30000) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         reject(new Error(`Operation timed out after ${timeoutInMs}ms!`))
@@ -62,16 +62,17 @@ class K8sCommands {
         const date = updated
           ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
           : '?';
-        return `${date} -> ${release} v${app_version || '?'} (${revision})`;
+        return `${date} -> v${app_version || '?'} (${revision})`;
       });
   }
 
   async rollback(revision) {
     const command = `helm rollback ${this.currentRelease} ${revision} --kube-context ${this.currentContext} --namespace ${this.currentNamespace}`;
-    // const stdout = await this.exec(command);
+    const stdout = await this.exec(command);
+
     this.currentRevision = revision;
-    // return stdout;
-    return [command];
+
+    return stdout;
   }
 }
 
