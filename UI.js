@@ -35,6 +35,10 @@ class UI extends EventEmitter {
     this.lists.forEach(({ name, widget }, index) => {
       widget.on('click', () => this.focusOnList(index));
 
+      widget.on('action', (element) => {
+        this.focusOnList(index); // to make it work when selecting with the mouse
+      });
+
       widget.on('select', (element) => {
         this.debug('UI.select', name, `"${element.content}"`);
         this.emit('item:select', { list: name, index, value: element.content });
@@ -52,8 +56,6 @@ class UI extends EventEmitter {
     const { widget } = this.lists[index];
     widget.setItems(items);
     this.focusOnList(index);
-
-    this.debug('UI > done rendering');
   }
 
   focusOnList(index) {
@@ -66,11 +68,14 @@ class UI extends EventEmitter {
     this.currentFocusedList = this.lists[index];
     this.currentFocusedList.widget.style.border.fg = this.colors.focus;
     this.currentFocusedList.widget.focus();
+
     this.render();
   }
 
   render() {
-		this.screen.render();
+    this.debug('UI > start rendering');
+    this.screen.render();
+    this.debug('UI > done rendering');
 	}
 
   create() {
@@ -113,9 +118,9 @@ class UI extends EventEmitter {
         fg: this.colors.blur,
       },
       scrollable: true,
-      mouse: true,
       keys: true,
       vi: false,
+      mouse: false,
       style: {
         item: {
           fg: this.colors.item.fg,
