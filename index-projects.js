@@ -1,3 +1,5 @@
+const dayjs = require('dayjs');
+
 const UI = require('./UI');
 const uiConfig = require('./config/ui-projects');
 
@@ -26,7 +28,25 @@ ui.on('item:select', async ({ list, index, value }) => {
 
       try {
         const revisions = await k8sCommands.listProjectRevisions(value);
-        ui.setListItems(nextIndex, revisions);
+
+        const prettyRevisions = revisions.map(({ context, revisions, error }) => {
+          if (error) {
+            return `[${context}] ${error}`;
+          }
+          if (!revisions[0]) {
+            return `[${context}] No revisions!`;
+          }
+
+          const { app_version, revision, updated } = revisions[0];
+
+          const date = updated
+            ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
+            : '?';
+
+          return `[${context}] ${date} -> v${app_version || '?'} (${revision})`;
+        });
+
+        ui.setListItems(nextIndex, prettyRevisions);
       } catch(e) {
         ui.showListError(nextIndex, e);
       }

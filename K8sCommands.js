@@ -1,5 +1,4 @@
 const shell = require('shelljs');
-const dayjs = require('dayjs');
 
 class K8sCommands {
   constructor() {
@@ -7,39 +6,7 @@ class K8sCommands {
     this.currentNamespace = null;
     this.currentRelease = null;
     this.currentRevision = null;
-
-    this.currentContexts = [];
   }
-
-  /* start of the additional methods used for the "per project" version of K8s Airways */
-  setContexts(contexts) {
-    this.currentContexts = contexts;
-  }
-
-  setContext(context) {
-    this.currentContext = context;
-  }
-
-  setNamespace(namespace) {
-    this.currentNamespace = namespace;
-  }
-
-  async listProjectRevisions(release) {
-    const execP = this.currentContexts.map(async (context) => {
-      const command = `helm history ${release} --kube-context ${context} --namespace ${this.currentNamespace} --max 100 -o json`;
-
-      try {
-        const stdout = await this.exec(command);
-        const mostRecent = this.normalizeRevisions(JSON.parse(stdout))[0];
-        return `[${context}] ${mostRecent}`;
-      } catch(e) {
-        return `[${context}] ${e}`;
-      }
-    });
-
-    return Promise.all(execP);
-  }
-  /* end of the additional methods used for the "per project" version of K8s Airways */
 
   exec(command, timeoutInMs = 30000) {
     return new Promise((resolve, reject) => {
@@ -93,13 +60,7 @@ class K8sCommands {
   normalizeRevisions(revisions) {
     return revisions
       .filter(({ description }) => description === 'Upgrade complete')
-      .sort((a, b) => b.revision - a.revision)
-      .map(({ app_version, revision, updated }) => {
-        const date = updated
-          ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
-          : '?';
-        return `${date} -> v${app_version || '?'} (${revision})`;
-      });
+      .sort((a, b) => b.revision - a.revision);
   }
 
   async rollback(revision) {

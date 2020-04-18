@@ -24,10 +24,10 @@ class K8sCommandsProjects extends K8sCommands {
 
       try {
         const stdout = await this.exec(command);
-        const mostRecent = this.normalizeRevisions(JSON.parse(stdout))[0];
-        return `[${context}] ${mostRecent}`;
-      } catch(e) {
-        return `[${context}] ${e}`;
+        const revisions = JSON.parse(stdout);
+        return { context, revisions };
+      } catch(error) {
+        return { context, error };
       }
     });
 
