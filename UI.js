@@ -27,6 +27,80 @@ class UI extends EventEmitter {
     this.screen.debug(`[${Date.now()}] `, ...args);
   }
 
+  render() {
+    this.debug('UI > start rendering');
+    this.screen.render();
+    this.debug('UI > done rendering');
+  }
+
+  setListItems(index, items) {
+    this.debug('UI.setListItems', index, items);
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
+
+    this.hideListLoader(index);
+    this.focusOnList(index);
+
+    const { widget } = this.lists[index];
+    widget.setItems(items);
+    widget.select(0);
+  }
+
+  /* messages */
+
+  showListMessage(index, message, type = 'log', timeout = 3) {
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
+
+    this.hideListLoader(index);
+
+    if (type === 'error') {
+      this.messageBox.error(message, timeout);
+    } else {
+      this.messageBox.log(message, timeout);
+    }
+
+    const { widget } = this.lists[index];
+    widget.clearItems();
+    widget.append(this.messageBox);
+  }
+
+  showListError(index, error) {
+    this.showListMessage(index, error, 'error');
+  }
+
+  /* loader */
+
+  showListLoader(index, message) {
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
+
+    for (let i = index + 1; i < this.lists.length; i += 1) {
+      this.lists[i].widget.clearItems();
+      this.lists[i].widget.remove(this.messageBox);
+    }
+
+    this.loader.load(message);
+
+    const { widget } = this.lists[index];
+    widget.clearItems();
+    widget.append(this.loader);
+  }
+
+  hideListLoader(index) {
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
+
+    this.loader.stop();
+    this.lists[index].widget.remove(this.loader);
+  }
+
+  /* events */
+
   bindEvents() {
     this.screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
     this.screen.key(['left', 'S-tab'], () => this.focusOnList(this.currentFocusedList.index - 1));
@@ -44,47 +118,6 @@ class UI extends EventEmitter {
     });
   }
 
-  showListLoader(index, message) {
-    if (index < 0 || index >= this.lists.length) {
-      return;
-    }
-
-    for (let i = index + 1; i < this.lists.length; i += 1) {
-      this.lists[i].widget.clearItems();
-    }
-
-    this.loader.load(message);
-
-    const { widget } = this.lists[index];
-    widget.clearItems();
-    widget.append(this.loader);
-
-    this.focusOnList(index); // will also force render so that the message is visible
-  }
-
-  hideListLoader(index) {
-    if (index < 0 || index >= this.lists.length) {
-      return;
-    }
-
-    this.loader.stop();
-    this.lists[index].widget.remove(this.loader);
-  }
-
-  setListItems(index, items) {
-    this.debug('UI.setListItems', index, items);
-    if (index < 0 || index >= this.lists.length) {
-      return;
-    }
-
-    this.hideListLoader(index);
-    this.focusOnList(index);
-
-    const { widget } = this.lists[index];
-    widget.setItems(items);
-    widget.select(0);
-  }
-
   focusOnList(index) {
     if (index < 0 || index >= this.lists.length) {
       return;
@@ -92,38 +125,9 @@ class UI extends EventEmitter {
 
     this.currentFocusedList = this.lists[index];
     this.currentFocusedList.widget.focus();
-    this.render();
   }
 
-  render() {
-    this.debug('UI > start rendering');
-    this.screen.render();
-    this.debug('UI > done rendering');
-  }
-
-  showListMessage(index, message, type = 'log', timeout = 10) {
-    if (index < 0 || index >= this.lists.length) {
-      return;
-    }
-
-    this.hideListLoader(index);
-
-    if (type === 'error') {
-      this.messageBox.error(message, timeout);
-    } else {
-      this.messageBox.log(message, timeout);
-    }
-
-    const { widget } = this.lists[index];
-    widget.clearItems();
-    widget.append(this.messageBox);
-
-    this.focusOnList(index); // will also force render so that the message is visible
-  }
-
-  showListError(index, error) {
-    this.showListMessage(index, error, 'error');
-  }
+  /* widgets creation */
 
   create() {
     this.screen = this.createScreen();
