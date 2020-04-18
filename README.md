@@ -1,15 +1,15 @@
-# K8s airways
+# K8s Airways
 
 A terminal application to make Kubernetes rollbacks easy.
 
-## ✈️ Installation and usage
+## ✈️  Installation & usage
 
 ```shell
 npm -g k8s-airways
 k8s-airways
 ```
 
-## ✈️ Contribute
+## ✈️  Contribute
 
 1. Fork it: `git clone https://github.com/mawrkus/k8s-airways.git`
 2. Create your feature branch: `git checkout -b feature/my-new-feature`
