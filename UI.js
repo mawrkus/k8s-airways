@@ -10,6 +10,7 @@ class UI extends EventEmitter {
 
     this.create();
     this.bindEvents();
+    this.focusOnList(0);
     this.render();
   }
 
@@ -23,6 +24,8 @@ class UI extends EventEmitter {
     const self = this;
 
     this.lists.forEach(({ name, widget }, index) => {
+      widget.on('click', () => this.focusOnList(index));
+
       widget.on('select', function() {
         self.debug('select', name, `"${this.value}"`);
         self.emit('item:select', { list: name, index, value: this.value });
@@ -31,17 +34,23 @@ class UI extends EventEmitter {
   }
 
   setListItems(index, items) {
-    this.debug('UI', 'setListItems', index, items);
+    this.debug('UI.setListItems', index, items);
 
-    for (let i = index; i < this.lists.length; i += 1) {
+    for (let i = index + 1; i < this.lists.length; i += 1) {
       this.lists[i].widget.clearItems();
     }
 
     const { widget } = this.lists[index];
     widget.setItems(items);
+    this.focusOnList(index);
     this.render();
 
-    this.debug('UI', 'done rendering');
+    this.debug('UI > done rendering');
+  }
+
+  focusOnList(index) {
+    this.debug('UI.focusOnList', index);
+    this.lists[index].widget.focus();
   }
 
   render() {

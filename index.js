@@ -9,7 +9,7 @@ ui.on('item:select', ({ list, index, value }) => {
   let items = [];
 
   // TODO: make this work
-  // ui.setListItems(nextIndex, ['Loading...']);
+  ui.setListItems(nextIndex, ['Loading...']);
 
   switch(list) {
     case 'contexts':
