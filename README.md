@@ -7,8 +7,22 @@ A terminal application to make Kubernetes rollbacks easy.
 ```shell
 git clone https://github.com/mawrkus/k8s-airways.git
 cd k8s-airways
-npm install && npm run start
+npm install
 ```
+
+To browse **contexts** -> **namespaces** -> **releases** -> **revisions**:
+
+```shell
+npm run start
+```
+
+After configuring your projects in `./config/projects.json`:
+
+```shell
+npm run start:projects
+```
+
+You'll be able to browse **projects** -> **releases** -> **revisions**:
 
 ## ✈️  Contribute
 
