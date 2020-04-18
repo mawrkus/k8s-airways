@@ -9,26 +9,37 @@ class K8sCommands {
     this.currentNamespace = null;
   }
 
-  listContexts() {
-    const { stdout } = shell.exec('kubectx', { silent: true });
+  exec(command) {
+    return new Promise((resolve, reject) => {
+      shell.exec(command, { silent: true, fatal: true }, (code, stdout, stderr) => {
+        if (stderr) {
+          return reject(stderr);
+        }
+        return resolve(stdout);
+      });
+    });
+  }
+
+  async listContexts() {
+    const stdout = await this.exec('kubectx');
     return stdout.split('\n').filter(Boolean);
   }
 
-  listNamespaces(context) {
+  async listNamespaces(context) {
     this.currentContext = context;
-    shell.exec(`kubectx ${context}`, { silent: true });
+    await this.exec(`kubectx ${context}`);
 
-    const { stdout } = shell.exec('kubens', { silent: true });
+    const stdout = await this.exec('kubens');
     return stdout.split('\n').filter(Boolean);
   }
 
-  listReleases(namespace) {
+  async listReleases(namespace) {
     this.currentNamespace = namespace;
 
     const command = `helm ls --kube-context ${this.currentContext} --namespace ${namespace} -o json`;
     this.debug('K8s', command);
 
-    const { stdout: json } = shell.exec(command, { silent: true });
+    const { stdout: json } = await this.exec(command);
     this.debug('K8s', 'json=', json);
 
     try {
@@ -39,11 +50,11 @@ class K8sCommands {
     }
   }
 
-  listVersions(release) {
+  async listVersions(release) {
     const command = `helm history ${release} --kube-context ${this.currentContext} --namespace ${this.currentNamespace} --max 50 -o json`;
     this.debug('K8s', command);
 
-    const { stdout: json } = shell.exec(command, { silent: true });
+    const { stdout: json } = await this.exec(command);
     this.debug('K8s', 'json=', json);
 
     try {

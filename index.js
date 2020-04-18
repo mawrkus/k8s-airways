@@ -4,24 +4,23 @@ const K8sCommands = require('./K8sCommands');
 const ui = new UI();
 const k8sCommands = new K8sCommands({ debug: ui.debug.bind(ui) });
 
-ui.on('item:select', ({ list, index, value }) => {
+ui.on('item:select', async ({ list, index, value }) => {
   const nextIndex = index + 1;
   let items = [];
 
-  // TODO: make this work
   ui.setListItems(nextIndex, ['Loading...']);
 
   switch(list) {
     case 'contexts':
-      items = k8sCommands.listNamespaces(value);
+      items = await k8sCommands.listNamespaces(value);
       break;
 
     case 'namespaces':
-      items = k8sCommands.listReleases(value);
+      items = await k8sCommands.listReleases(value);
       break;
 
     case 'releases':
-      items = k8sCommands.listVersions(value);
+      items = await k8sCommands.listVersions(value);
       break;
 
     default:
@@ -31,4 +30,4 @@ ui.on('item:select', ({ list, index, value }) => {
   ui.setListItems(nextIndex, items);
 });
 
-ui.setListItems(0, k8sCommands.listContexts());
+(async () => ui.setListItems(0, await k8sCommands.listContexts()))();
