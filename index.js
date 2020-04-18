@@ -39,9 +39,7 @@ ui.on('item:select', async ({ list, index, value }) => {
         const revisions = await k8sCommands.listRevisions(value);
 
         const prettyRevisions = revisions.map(({ app_version, revision, updated }) => {
-          const date = updated
-            ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
-            : '?';
+          const date = updated ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss') : '?';
           return `${date} -> v${app_version || '?'} (${revision})`;
         });
 

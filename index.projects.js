@@ -38,10 +38,7 @@ ui.on('item:select', async ({ list, index, value }) => {
           }
 
           const { app_version, revision, updated } = revisions[0];
-
-          const date = updated
-            ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
-            : '?';
+          const date = updated ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss') : '?';
 
           return `[${context}] ${date} -> v${app_version || '?'} (${revision})`;
         });
