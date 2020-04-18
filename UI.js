@@ -9,8 +9,10 @@ class UI extends EventEmitter {
     this.lists = [];
     this.currentFocusedList = null;
     this.colors = {
-      focus: '#ffffff',
-      blur: '#777777',
+      list: {
+        focus: '#ffffff',
+        blur: '#777777',
+      },
       item: {
         fg: '#00ff00',
         selected: {
@@ -35,10 +37,6 @@ class UI extends EventEmitter {
     this.lists.forEach(({ name, widget }, index) => {
       widget.on('click', () => this.focusOnList(index));
 
-      widget.on('action', (element) => {
-        this.focusOnList(index); // to make it work when selecting with the mouse
-      });
-
       widget.on('select', (element) => {
         this.debug('UI.select', name, `"${element.content}"`);
         this.emit('item:select', { list: name, index, value: element.content });
@@ -60,15 +58,8 @@ class UI extends EventEmitter {
 
   focusOnList(index) {
     this.debug('UI.focusOnList', index);
-
-    if (this.currentFocusedList) {
-      this.currentFocusedList.widget.style.border.fg = this.colors.blur;
-    }
-
     this.currentFocusedList = this.lists[index];
-    this.currentFocusedList.widget.style.border.fg = this.colors.focus;
     this.currentFocusedList.widget.focus();
-
     this.render();
   }
 
@@ -113,14 +104,14 @@ class UI extends EventEmitter {
       top: 0,
       left: 0,
       width: '25%',
-      border: {
-        type: 'line',
-        fg: this.colors.blur,
-      },
       scrollable: true,
       keys: true,
       vi: false,
       mouse: false,
+      border: {
+        type: 'line',
+        fg: this.colors.list.blur,
+      },
       style: {
         item: {
           fg: this.colors.item.fg,
@@ -128,6 +119,11 @@ class UI extends EventEmitter {
         selected: {
           fg: this.colors.item.selected.fg,
           bg: this.colors.item.selected.bg,
+        },
+        focus: {
+          border: {
+            fg: this.colors.list.focus,
+          },
         },
       },
       ...options,
