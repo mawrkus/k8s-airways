@@ -53,8 +53,10 @@ class K8sCommands {
         .filter(({ description }) => description === 'Upgrade complete')
         .sort((a, b) => b.revision - a.revision)
         .map(({ app_version, revision, updated }) => {
-          const date = dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss');
-          return `${date} -> v${app_version} (${revision})`;
+          const date = updated
+            ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
+            : '?';
+          return `${date} -> v${app_version || '?'} (${revision})`;
         });
     } catch(e) {
       return [json];
