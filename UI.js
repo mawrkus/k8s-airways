@@ -92,9 +92,7 @@ class UI extends EventEmitter {
       'versions',
     ].forEach((name, index) => {
       const widget = this.createColumn({ name, left: `${index * 25 }%` });
-
       this.lists.push({ name, widget, index });
-
       this.screen.append(widget);
     });
   }
@@ -118,7 +116,7 @@ class UI extends EventEmitter {
       left: 0,
       width: '25%',
       scrollable: true,
-      mouse: false,
+      mouse: true,
       keys: true,
       vi: false,
       border: {

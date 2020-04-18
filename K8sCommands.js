@@ -2,11 +2,11 @@ const shell = require('shelljs');
 const dayjs = require('dayjs');
 
 class K8sCommands {
-  constructor({ debug }) {
-    this.debug = debug;
-
+  constructor() {
     this.currentContext = null;
     this.currentNamespace = null;
+    this.currentRelease = null;
+    this.currentVersion = null;
   }
 
   exec(command) {
@@ -21,44 +21,46 @@ class K8sCommands {
   }
 
   async listContexts() {
-    const stdout = await this.exec('kubectx');
-    return stdout.split('\n').filter(Boolean);
+    try {
+      const stdout = await this.exec('kubectx');
+      return stdout.split('\n').filter(Boolean);
+    } catch(e) {
+      return [];
+    }
   }
 
   async listNamespaces(context) {
-    this.currentContext = context;
-    await this.exec(`kubectx ${context}`);
+    try {
+      await this.exec(`kubectx ${context}`);
+      this.currentContext = context;
 
-    const stdout = await this.exec('kubens');
-    return stdout.split('\n').filter(Boolean);
+      const stdout = await this.exec('kubens');
+      return stdout.split('\n').filter(Boolean);
+    } catch(e) {
+      return [];
+    }
   }
 
   async listReleases(namespace) {
-    this.currentNamespace = namespace;
-
-    const command = `helm ls --kube-context ${this.currentContext} --namespace ${namespace} -o json`;
-    this.debug('K8s', command);
-
-    const { stdout: json } = await this.exec(command);
-    this.debug('K8s', 'json=', json);
-
     try {
-      const releases = JSON.parse(json);
+      const command = `helm ls --kube-context ${this.currentContext} --namespace ${namespace} -o json`;
+      const stdout = await this.exec(command);
+      this.currentNamespace = namespace;
+
+      const releases = JSON.parse(stdout);
       return releases.map(({ name }) => name);
     } catch(e) {
-      return [json];
+      return [];
     }
   }
 
   async listVersions(release) {
-    const command = `helm history ${release} --kube-context ${this.currentContext} --namespace ${this.currentNamespace} --max 50 -o json`;
-    this.debug('K8s', command);
-
-    const { stdout: json } = await this.exec(command);
-    this.debug('K8s', 'json=', json);
-
     try {
-      const versions = JSON.parse(json);
+      const command = `helm history ${release} --kube-context ${this.currentContext} --namespace ${this.currentNamespace} --max 50 -o json`;
+      const stdout = await this.exec(command);
+      this.currentRelease = release;
+
+      const versions = JSON.parse(stdout);
 
       return versions
         .filter(({ description }) => description === 'Upgrade complete')
@@ -70,8 +72,13 @@ class K8sCommands {
           return `${date} -> v${app_version || '?'} (${revision})`;
         });
     } catch(e) {
-      return [json];
+      return [];
     }
+  }
+
+  async rollback(version) {
+    // TODO
+    this.currentVersion = version;
   }
 }
 
