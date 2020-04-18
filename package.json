@@ -1,0 +1,16 @@
+{
+  "name": "k8s-airways",
+  "version": "0.1.0",
+  "description": "A terminal interface to make K8s rollbacks easy",
+  "main": "index.js",
+  "author": "mawrkus",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "dayjs": "^1.8.24",
+    "shelljs": "^0.8.3"
+  }
+}
