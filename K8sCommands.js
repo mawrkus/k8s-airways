@@ -6,7 +6,7 @@ class K8sCommands {
     this.currentContext = null;
     this.currentNamespace = null;
     this.currentRelease = null;
-    this.currentVersion = null;
+    this.currentRevision = null;
   }
 
   exec(command) {
@@ -62,9 +62,12 @@ class K8sCommands {
       });
   }
 
-  async rollback(version) {
-    // TODO
-    this.currentVersion = version;
+  async rollback(revision) {
+    const command = `helm rollback ${this.currentRelease} ${revision} --kube-context ${this.currentContext} --namespace ${this.currentNamespace}`;
+    // const stdout = await this.exec(command);
+    this.currentRevision = revision;
+    // return stdout;
+    return [command];
   }
 }
 
