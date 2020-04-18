@@ -7,11 +7,22 @@ class UI extends EventEmitter {
 
     this.screen = null;
     this.lists = [];
+    this.currentFocusedList = null;
+    this.colors = {
+      focus: '#ffffff',
+      blur: '#777777',
+      item: {
+        fg: '#00ff00',
+        selected: {
+          fg: '#ffffff',
+          bg: '#00ff00',
+        },
+      },
+    };
 
     this.create();
     this.bindEvents();
     this.focusOnList(0);
-    this.render();
   }
 
   debug(...args) {
@@ -21,14 +32,12 @@ class UI extends EventEmitter {
   bindEvents() {
     this.screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
 
-    const self = this;
-
     this.lists.forEach(({ name, widget }, index) => {
       widget.on('click', () => this.focusOnList(index));
 
-      widget.on('select', function() {
-        self.debug('select', name, `"${this.value}"`);
-        self.emit('item:select', { list: name, index, value: this.value });
+      widget.on('select', (element) => {
+        this.debug('UI.select', name, `"${element.content}"`);
+        this.emit('item:select', { list: name, index, value: element.content });
       });
     });
   }
@@ -43,14 +52,21 @@ class UI extends EventEmitter {
     const { widget } = this.lists[index];
     widget.setItems(items);
     this.focusOnList(index);
-    this.render();
 
     this.debug('UI > done rendering');
   }
 
   focusOnList(index) {
     this.debug('UI.focusOnList', index);
-    this.lists[index].widget.focus();
+
+    if (this.currentFocusedList) {
+      this.currentFocusedList.widget.style.border.fg = this.colors.blur;
+    }
+
+    this.currentFocusedList = this.lists[index];
+    this.currentFocusedList.widget.style.border.fg = this.colors.focus;
+    this.currentFocusedList.widget.focus();
+    this.render();
   }
 
   render() {
@@ -94,6 +110,7 @@ class UI extends EventEmitter {
       width: '25%',
       border: {
         type: 'line',
+        fg: this.colors.blur,
       },
       scrollable: true,
       mouse: true,
@@ -101,11 +118,11 @@ class UI extends EventEmitter {
       vi: false,
       style: {
         item: {
-          fg: '#00ff00',
+          fg: this.colors.item.fg,
         },
         selected: {
-          bg: '#00ff00',
-          fg: '#ffffff',
+          fg: this.colors.item.selected.fg,
+          bg: this.colors.item.selected.bg,
         },
       },
       ...options,

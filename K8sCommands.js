@@ -4,6 +4,9 @@ const dayjs = require('dayjs');
 class K8sCommands {
   constructor({ debug }) {
     this.debug = debug;
+
+    this.currentContext = null;
+    this.currentNamespace = null;
   }
 
   listContexts() {
@@ -23,8 +26,9 @@ class K8sCommands {
     this.currentNamespace = namespace;
 
     const command = `helm ls --kube-context ${this.currentContext} --namespace ${namespace} -o json`;
-    const { stdout: json } = shell.exec(command, { silent: true });
     this.debug('K8s', command);
+
+    const { stdout: json } = shell.exec(command, { silent: true });
     this.debug('K8s', 'json=', json);
 
     try {
@@ -37,12 +41,14 @@ class K8sCommands {
 
   listVersions(release) {
     const command = `helm history ${release} --kube-context ${this.currentContext} --namespace ${this.currentNamespace} --max 50 -o json`;
-    const { stdout: json } = shell.exec(command, { silent: true });
     this.debug('K8s', command);
+
+    const { stdout: json } = shell.exec(command, { silent: true });
     this.debug('K8s', 'json=', json);
 
     try {
       const versions = JSON.parse(json);
+
       return versions
         .filter(({ description }) => description === 'Upgrade complete')
         .sort((a, b) => b.revision - a.revision)
