@@ -77,6 +77,4 @@ ui.on('item:select', async ({ list, index, value }) => {
   }
 });
 
-(async () => {
-  ui.setListItems(0, Object.keys(projects));
-})();
+ui.setListItems(0, Object.keys(projects));
