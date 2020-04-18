@@ -32,16 +32,20 @@ ui.on('item:select', async ({ list, index, value }) => {
 
         allRevisions.forEach(({ context, revisions, error }) => {
           if (error) {
-            return `[${context}] ${error}`;
+            prettyRevisions.push(`[${context}] ${error}`);
+            return;
           }
 
-          if (!revisions[0]) {
-            return `[${context}] No revisions!`;
+          if (!revisions.length) {
+            prettyRevisions.push(`[${context}] No revisions!`);
+            return;
           }
 
-          [0, 1, 2]
-            .filter(n => revisions[n])
-            .forEach(n => prettyRevisions.push(formatRevision(revisions[n], context)));
+          [1, 2, 3]
+            .filter((n) => revisions[revisions.length - n])
+            .forEach((n) => prettyRevisions.push(
+              formatRevision(revisions[revisions.length - n], context)),
+            );
         });
 
         ui.setListItems(nextIndex, prettyRevisions);

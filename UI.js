@@ -141,8 +141,8 @@ class UI extends EventEmitter {
   }
 
   createLists() {
-    return this.options.lists.map(({ name }, index) => {
-      const widget = this.createColumn({ name, left: `${index * 25 }%` });
+    return this.options.lists.map(({ name, left, width }, index) => {
+      const widget = this.createColumn({ name, left, width });
       this.screen.append(widget);
       return { name, widget, index };
     });

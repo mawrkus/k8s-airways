@@ -1,9 +1,9 @@
 {
   "lists": [
-    { "name": "contexts" },
-    { "name": "namespaces" },
-    { "name": "releases" },
-    { "name": "revisions" }
+    { "name": "contexts", "left": "0%", "width": "25%" },
+    { "name": "namespaces", "left": "25%", "width": "25%" },
+    { "name": "releases", "left": "50%", "width": "25%" },
+    { "name": "revisions", "left": "75%", "width": "25%" }
   ],
   "colors": {
     "border": {

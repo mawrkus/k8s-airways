@@ -39,7 +39,7 @@ ui.on('item:select', async ({ list, index, value }) => {
 
       try {
         const revisions = await k8sCommands.listRevisions(value);
-        const prettyRevisions = revisions.map(r => formatRevision(r, null));
+        const prettyRevisions = revisions.map((r) => formatRevision(r, null));
         ui.setListItems(nextIndex, prettyRevisions);
       } catch(e) {
         ui.showListError(nextIndex, e);

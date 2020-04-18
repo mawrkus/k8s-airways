@@ -1,9 +1,9 @@
 {
   "lists": [
-    { "name": "projects" },
-    { "name": "releases" },
-    { "name": "revisions" },
-    { "name": "rollbacks" }
+    { "name": "projects", "left": "0%", "width": "20%" },
+    { "name": "releases", "left": "20%", "width": "20%" },
+    { "name": "revisions", "left": "40%", "width": "40%" },
+    { "name": "rollbacks", "left": "80%", "width": "20%" }
   ],
   "colors": {
     "border": {
