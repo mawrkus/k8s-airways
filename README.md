@@ -10,19 +10,32 @@ cd k8s-airways
 npm install
 ```
 
-To browse **contexts** -> **namespaces** -> **releases** -> **revisions**:
+To browse **contexts** -> **namespaces** -> **releases** -> **revisions** :
 
 ```shell
 npm run start
 ```
 
-After configuring your projects in `./config/projects.json`:
+To browse **projects** -> **releases** -> **revisions** :
+
+Configure your project(s) in `./config/k8s-projects.json`:
+
+```json
+{
+  "Project Name": {
+    "contexts": ["europe", "usa", "asia"],
+    "namespace": "my-namespace",
+    "releases": ["my-blue-release", "my-green-release"]
+  }
+}
+```
+
+Then execute:
 
 ```shell
 npm run start:projects
 ```
 
-You'll be able to browse **projects** -> **releases** -> **revisions**:
 
 ## ✈️  Contribute
 
