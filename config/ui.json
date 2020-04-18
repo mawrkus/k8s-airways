@@ -6,7 +6,7 @@
     { "name": "revisions" }
   ],
   "colors": {
-    "list": {
+    "border": {
       "focus": "#ffffff",
       "blur": "#555555"
     },

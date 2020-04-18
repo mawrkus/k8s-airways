@@ -160,7 +160,7 @@ class UI extends EventEmitter {
       vi: false,
       border: {
         type: 'line',
-        fg: this.options.colors.list.blur,
+        fg: this.options.colors.border.blur,
       },
       scrollbar: {
         bg: this.options.colors.scrollbar.bg,
@@ -169,13 +169,10 @@ class UI extends EventEmitter {
         item: {
           fg: this.options.colors.item.fg,
         },
-        selected: {
-          fg: this.options.colors.item.selected.fg,
-          bg: this.options.colors.item.selected.bg,
-        },
+        selected: this.options.colors.item.selected,
         focus: {
           border: {
-            fg: this.options.colors.list.focus,
+            fg: this.options.colors.border.focus,
           },
         },
       },

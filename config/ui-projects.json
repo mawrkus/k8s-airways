@@ -6,7 +6,7 @@
     { "name": "rollbacks" }
   ],
   "colors": {
-    "list": {
+    "border": {
       "focus": "#ffffff",
       "blur": "#555555"
     },
