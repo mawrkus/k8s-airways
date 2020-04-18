@@ -13,6 +13,9 @@ class UI extends EventEmitter {
         focus: '#ffffff',
         blur: '#777777',
       },
+      scrollbar: {
+        bg: '#ffffff',
+      },
       item: {
         fg: '#00ff00',
         selected: {
@@ -105,12 +108,15 @@ class UI extends EventEmitter {
       left: 0,
       width: '25%',
       scrollable: true,
+      mouse: false,
       keys: true,
       vi: false,
-      mouse: false,
       border: {
         type: 'line',
         fg: this.colors.list.blur,
+      },
+      scrollbar: {
+        bg: this.colors.scrollbar.bg,
       },
       style: {
         item: {
