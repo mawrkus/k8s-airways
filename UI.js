@@ -7,7 +7,9 @@ class UI extends EventEmitter {
 
     this.screen = null;
     this.lists = [];
+    this.loader = null;
     this.currentFocusedList = null;
+
     this.colors = {
       list: {
         focus: '#ffffff',
@@ -43,14 +45,15 @@ class UI extends EventEmitter {
       widget.on('click', () => this.focusOnList(index));
 
       widget.on('select', (element) => {
-        this.debug('UI.select', name, `"${element.content}"`);
-        this.emit('item:select', { list: name, index, value: element.content });
+        if (element) {
+          this.debug('UI.select', name, `"${element.content}"`);
+          this.emit('item:select', { list: name, index, value: element.content });
+        }
       });
     });
   }
 
-  setListItems(index, items) {
-    this.debug('UI.setListItems', index, items);
+  showListLoader(index, message) {
     if (index < 0 || index >= this.lists.length) {
       return;
     }
@@ -59,20 +62,43 @@ class UI extends EventEmitter {
       this.lists[i].widget.clearItems();
     }
 
+    this.loader.load(message);
+
+    const { widget } = this.lists[index];
+    widget.clearItems();
+    widget.append(this.loader);
+  }
+
+  hideListLoader(index) {
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
+
+    this.loader.stop();
+    this.lists[index].widget.remove(this.loader);
+  }
+
+  setListItems(index, items) {
+    this.debug('UI.setListItems', index, items);
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
+
+    this.hideListLoader(index);
+    this.focusOnList(index);
+
     const { widget } = this.lists[index];
     widget.setItems(items);
-    this.focusOnList(index);
+    widget.select(0);
   }
 
   focusOnList(index) {
-    this.debug('UI.focusOnList', index);
     if (index < 0 || index >= this.lists.length) {
       return;
     }
 
     this.currentFocusedList = this.lists[index];
     this.currentFocusedList.widget.focus();
-
     this.render();
   }
 
@@ -89,12 +115,14 @@ class UI extends EventEmitter {
       'contexts',
       'namespaces',
       'releases',
-      'versions',
+      'revisions',
     ].forEach((name, index) => {
       const widget = this.createColumn({ name, left: `${index * 25 }%` });
       this.lists.push({ name, widget, index });
       this.screen.append(widget);
     });
+
+    this.loader = this.createLoader();
   }
 
   createScreen() {
@@ -142,6 +170,10 @@ class UI extends EventEmitter {
       },
       ...options,
     });
+  }
+
+  createLoader() {
+    return blessed.Loading();
   }
 }
 

@@ -54,9 +54,9 @@ class K8sCommands {
     }
   }
 
-  async listVersions(release) {
+  async listRevisions(release) {
     try {
-      const command = `helm history ${release} --kube-context ${this.currentContext} --namespace ${this.currentNamespace} --max 50 -o json`;
+      const command = `helm history ${release} --kube-context ${this.currentContext} --namespace ${this.currentNamespace} --max 100 -o json`;
       const stdout = await this.exec(command);
       this.currentRelease = release;
 
