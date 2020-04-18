@@ -58,6 +58,8 @@ class UI extends EventEmitter {
     const { widget } = this.lists[index];
     widget.clearItems();
     widget.append(this.loader);
+
+    this.focusOnList(index); // will also force render so that the message is visible
   }
 
   hideListLoader(index) {
@@ -99,7 +101,7 @@ class UI extends EventEmitter {
     this.debug('UI > done rendering');
   }
 
-  showListMessage(index, message, callback, type = 'log') {
+  showListMessage(index, message, type = 'log', timeout = 10) {
     if (index < 0 || index >= this.lists.length) {
       return;
     }
@@ -107,19 +109,20 @@ class UI extends EventEmitter {
     this.hideListLoader(index);
 
     if (type === 'error') {
-      this.messageBox.error(message, 3, callback);
+      this.messageBox.error(message, timeout);
     } else {
-      this.messageBox.log(message, 3, callback);
+      this.messageBox.log(message, timeout);
     }
 
     const { widget } = this.lists[index];
     widget.clearItems();
     widget.append(this.messageBox);
+
+    this.focusOnList(index); // will also force render so that the message is visible
   }
 
   showListError(index, error) {
-    this.showListMessage(index, error, null, 'error');
-    this.focusOnList(index); // will also force render so that the message is visible
+    this.showListMessage(index, error, 'error');
   }
 
   create() {
