@@ -36,6 +36,8 @@ class UI extends EventEmitter {
 
   bindEvents() {
     this.screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
+    this.screen.key(['left', 'S-tab'], () => this.focusOnList(this.currentFocusedList.index - 1));
+    this.screen.key(['right', 'tab'], () => this.focusOnList(this.currentFocusedList.index + 1));
 
     this.lists.forEach(({ name, widget }, index) => {
       widget.on('click', () => this.focusOnList(index));
@@ -61,8 +63,14 @@ class UI extends EventEmitter {
 
   focusOnList(index) {
     this.debug('UI.focusOnList', index);
+
+    if (index < 0 || index >= this.lists.length) {
+      return;
+    }
+
     this.currentFocusedList = this.lists[index];
     this.currentFocusedList.widget.focus();
+
     this.render();
   }
 
@@ -80,10 +88,10 @@ class UI extends EventEmitter {
       'namespaces',
       'releases',
       'versions',
-    ].forEach((name, i) => {
-      const widget = this.createColumn({ name, left: `${i * 25 }%` });
+    ].forEach((name, index) => {
+      const widget = this.createColumn({ name, left: `${index * 25 }%` });
 
-      this.lists.push({ name, widget });
+      this.lists.push({ name, widget, index });
 
       this.screen.append(widget);
     });
