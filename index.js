@@ -1,5 +1,9 @@
+const dayjs = require('dayjs');
+
 const UI = require('./UI');
 const K8sCommands = require('./K8sCommands');
+
+const formatRevision = require('./helpers/formatRevision');
 
 const ui = new UI();
 const k8sCommands = new K8sCommands();
@@ -35,7 +39,8 @@ ui.on('item:select', async ({ list, index, value }) => {
 
       try {
         const revisions = await k8sCommands.listRevisions(value);
-        ui.setListItems(nextIndex, revisions);
+        const prettyRevisions = revisions.map((r) => formatRevision(r, null));
+        ui.setListItems(nextIndex, prettyRevisions);
       } catch(e) {
         ui.showListError(nextIndex, e);
       }
@@ -47,8 +52,8 @@ ui.on('item:select', async ({ list, index, value }) => {
 
       try {
         await k8sCommands.rollback(revision);
+
         ui.showListMessage(index, `Rollback to revision "${revision}" completed!`);
-        ui.focusOnList(index - 1);
       } catch(e) {
         ui.showListError(index, e);
       }

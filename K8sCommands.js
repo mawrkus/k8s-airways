@@ -1,5 +1,4 @@
 const shell = require('shelljs');
-const dayjs = require('dayjs');
 
 class K8sCommands {
   constructor() {
@@ -53,17 +52,15 @@ class K8sCommands {
 
     this.currentRelease = release;
 
-    const versions = JSON.parse(stdout);
+    const revisions = JSON.parse(stdout);
 
-    return versions
+    return this.normalizeRevisions(revisions);
+  }
+
+  normalizeRevisions(revisions) {
+    return revisions
       .filter(({ description }) => description === 'Upgrade complete')
-      .sort((a, b) => b.revision - a.revision)
-      .map(({ app_version, revision, updated }) => {
-        const date = updated
-          ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss')
-          : '?';
-        return `${date} -> v${app_version || '?'} (${revision})`;
-      });
+      .sort((a, b) => b.revision - a.revision);
   }
 
   async rollback(revision) {

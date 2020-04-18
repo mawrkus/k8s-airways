@@ -1,0 +1,27 @@
+{
+  "Noodle": {
+    "contexts": ["eu", "us", "asia"],
+    "namespace": "noodle-v1",
+    "releases": ["noodle"]
+  },
+  "Filehippo": {
+    "contexts": ["eu", "us", "asia"],
+    "namespace": "filehippo-v1",
+    "releases": ["filehippo-v1"]
+  },
+  "Digital Trends": {
+    "contexts": ["eu", "us", "asia"],
+    "namespace": "digitaltrends-v1",
+    "releases": ["digitaltrends-v1"]
+  },
+  "Binge": {
+    "contexts": ["eu"],
+    "namespace": "binge-v1",
+    "releases": ["binge-v3"]
+  },
+  "Atlas API (staging)": {
+    "contexts": ["staging"],
+    "namespace": "atlas-api",
+    "releases": ["atlas-api-release"]
+  }
+}
