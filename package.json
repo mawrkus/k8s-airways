@@ -1,13 +1,37 @@
 {
   "name": "k8s-airways",
   "version": "0.1.0",
-  "description": "A terminal interface to make K8s rollbacks easy",
-  "main": "index.js",
-  "author": "mawrkus",
+  "description": "A terminal application to make K8s rollbacks easy",
+  "author": "mawrkus <web@sparring-partner.be>",
   "license": "MIT",
+  "homepage": "https://github.com/mawrkus/k8s-airways",
+  "bugs": {
+    "url": "https://github.com/mawrkus/k8s-airways/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mawrkus/k8s-airways.git"
+  },
+  "keywords": [
+    "k8s",
+    "kubernetes",
+    "rollback",
+    "helm"
+  ],
+  "engines": {
+    "node": ">= 10"
+  },
+  "files": [
+    "bin/k8s-airways.js",
+    "src",
+    "index.js",
+    "README.md"
+  ],
+  "bin": "bin/k8s-airways.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "start:projects": "node index.projects.js",
+    "start": "node bin/k8s-airways.js",
+    "start:projects": "node bin/k8s-airways.js -c config/k8s-demo-projects.json",
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "",
@@ -18,6 +42,7 @@
   },
   "dependencies": {
     "blessed": "^0.1.81",
+    "commander": "^5.0.0",
     "dayjs": "^1.8.24",
     "shelljs": "^0.8.3"
   },
