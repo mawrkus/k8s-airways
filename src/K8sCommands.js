@@ -27,8 +27,9 @@ class K8sCommands {
 
   async listNamespaces(context) {
     await this.exec(`kubectl config use-context ${context}`);
-    const stdout = await this.exec('kubens');
-    return stdout.split('\n').filter(Boolean);
+    const stdout = await this.exec('kubectl get namespaces -o=json');
+    const { items: namespaces } = JSON.parse(stdout);
+    return namespaces.map(({ metadata }) => metadata.name);
   }
 
   async listReleases(context, namespace) {
