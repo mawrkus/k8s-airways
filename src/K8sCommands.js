@@ -63,7 +63,9 @@ class K8sCommands {
 
   static normalizeRevisions(revisions) {
     return revisions
-      .filter(({ description }) => description === 'Upgrade complete')
+      .filter(({ description }) => (
+        description === 'Install complete' || description === 'Upgrade complete'
+      ))
       .sort((a, b) => b.revision - a.revision);
   }
 
