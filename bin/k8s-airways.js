@@ -2,6 +2,7 @@
 
 /* eslint-disable no-console, import/no-dynamic-require */
 
+const fs = require('fs');
 const path = require('path');
 
 const program = require('commander');
@@ -11,21 +12,30 @@ const UI = require('../UI');
 const K8sCommands = require('../K8sCommands');
 const App = require('../App');
 
+// eslint-disable-next-line consistent-return
+function loadProjectsConfig(filePath) {
+  try {
+    const json = fs.readFileSync(path.join(process.cwd(), filePath), 'utf8');
+    return JSON.parse(json);
+  } catch (e) {
+    console.error(`Error while loading projects config file "${filePath}"!`);
+    console.error(e);
+    process.exit(1);
+  }
+}
+
 program
   .version(version)
-  .option('-p, --projects [file]', 'projects config file, required', String, '')
-  .option('-u, --ui [file]', 'UI config file, required', String, '')
+  .option('-c, --config [file]', 'optional config file for projects', String, '')
   .parse(process.argv);
 
-['projects', 'ui'].forEach((f) => {
-  if (!program[f]) {
-    console.error(`Have you forgotten to specify a ${f} config file? ;)`);
-    program.help();
-  }
-});
+const projectsConfig = program.config
+  ? loadProjectsConfig(program.config)
+  : null;
 
-const projectsConfig = require(path.join(process.cwd(), program.projects));
-const uiConfig = require(path.join(process.cwd(), program.ui));
+const uiConfig = projectsConfig
+  ? require(path.join(__dirname, '../config/ui-projects.json'))
+  : require(path.join(__dirname, '../config/ui.json'));
 
 const k8s = new K8sCommands();
 const ui = new UI(uiConfig);

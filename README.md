@@ -4,6 +4,21 @@ A terminal application to make Kubernetes rollbacks easy.
 
 ## ✈️  Installation & usage
 
+## Using npm
+
+```shell
+npm install -g k8s-airways
+k8s-airways -c [optional projects config]
+```
+
+## Using npx
+
+```shell
+npx k8s-airways -c [optional projects config]
+```
+
+## Cloning the repository
+
 ```shell
 git clone https://github.com/mawrkus/k8s-airways.git
 cd k8s-airways
@@ -18,7 +33,17 @@ npm run start
 
 To browse **projects** -> **releases** -> **revisions** :
 
-Configure your project(s) in `./config/k8s-projects.json`:
+Configure your project(s) in `./config/k8s-projects.json` (see below).
+
+Then execute:
+
+```shell
+npm run start:projects
+```
+
+### The projects config file
+
+It's a simple JSON file containing an entry for each project, e.g.:
 
 ```json
 {
@@ -29,12 +54,6 @@ Configure your project(s) in `./config/k8s-projects.json`:
     "maxRevisionsPerContext": 3
   }
 }
-```
-
-Then execute:
-
-```shell
-npm run start:projects
 ```
 
 ## ✈️  Contribute
