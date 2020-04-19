@@ -2,6 +2,12 @@
 
 A terminal application to make Kubernetes rollbacks easy.
 
+## ✈️  Requirements
+
+- [Node.js](https://nodejs.org/) >= 10
+- [Helm](https://helm.sh/) >= 3
+- [kubectx + kubens](https://github.com/ahmetb/kubectx)
+
 ## ✈️  Installation & usage
 
 ### Using npm
