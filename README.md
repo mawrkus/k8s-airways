@@ -43,6 +43,6 @@ npm run start:projects
 1. Fork it: `git clone https://github.com/mawrkus/k8s-airways.git`
 2. Create your feature branch: `git checkout -b feature/my-new-feature`
 3. Commit your changes: `git commit -am 'Added some feature'`
-4. Check the build: `npm run build`
+4. Check the tests: `npm run test`
 5. Push to the branch: `git push origin my-new-feature`
 6. Submit a pull request :D

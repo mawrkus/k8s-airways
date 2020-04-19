@@ -9,7 +9,9 @@
     "start": "node index.js",
     "start:projects": "node index.projects.js",
     "lint": "eslint .",
-    "prerelease": "npm run lint",
+    "pretest": "npm run lint",
+    "test": "",
+    "prerelease": "npm run test",
     "release": "npm version -m \"New version: %s\"",
     "postrelease": "npm run push && npm publish",
     "push": "git push origin master && git push origin --tags"
