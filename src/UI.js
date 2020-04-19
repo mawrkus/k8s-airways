@@ -138,7 +138,7 @@ class UI extends EventEmitter {
 
   create() {
     this.createScreen();
-    this.createLists();
+    this.createColumns();
     this.createLoader();
     this.createErrorBox();
   }
@@ -154,7 +154,7 @@ class UI extends EventEmitter {
     });
   }
 
-  createLists() {
+  createColumns() {
     this.config.columns.forEach(({ name, left, width }, index) => {
       const { column, list } = this.createColumn({ name, left, width });
       this.screen.append(column);
@@ -211,7 +211,7 @@ class UI extends EventEmitter {
     column.append(listHeader);
     column.append(list);
 
-    return { column, list };
+    return { column, list, listHeader };
   }
 
   createLoader() {
