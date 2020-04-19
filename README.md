@@ -25,7 +25,8 @@ Configure your project(s) in `./config/k8s-projects.json`:
   "Project Name": {
     "contexts": ["europe", "usa", "asia"],
     "namespace": "my-namespace",
-    "releases": ["my-blue-release", "my-green-release"]
+    "releases": ["my-blue-release", "my-green-release"],
+    "maxRevisionsPerContext": 3
   }
 }
 ```

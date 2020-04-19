@@ -29,7 +29,11 @@ ui.on('item:select', async ({ listName, listIndex, itemValue }) => {
       ui.showListLoader(nextListIndex, 'Loading revisions...');
 
       try {
-        const { contexts: projectContexts, namespace: projectNamespace } = currentProject;
+        const {
+          contexts: projectContexts,
+          namespace: projectNamespace,
+          maxRevisionsPerContext,
+        } = currentProject;
 
         const allRevisions = await k8sCommands.listRevisionsForContexts(
           projectContexts,
@@ -50,9 +54,9 @@ ui.on('item:select', async ({ listName, listIndex, itemValue }) => {
             return;
           }
 
-          [0, 1, 2]
-            .filter((n) => revisions[n])
-            .forEach((n) => prettyRevisions.push(formatRevision(revisions[n], context)));
+          for (let n = 0; n < maxRevisionsPerContext && revisions[n]; n += 1) {
+            prettyRevisions.push(formatRevision(revisions[n], context));
+          }
         });
 
         ui.setListItems(nextListIndex, prettyRevisions);
