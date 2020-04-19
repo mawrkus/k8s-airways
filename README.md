@@ -10,17 +10,17 @@ A terminal application to make Kubernetes rollbacks easy.
 
 ## ✈️  Installation & usage
 
+### Using npx
+
+```shell
+npx k8s-airways -c [optional projects config]
+```
+
 ### Using npm
 
 ```shell
 npm install -g k8s-airways
 k8s-airways -c [optional projects config]
-```
-
-### Using npx
-
-```shell
-npx k8s-airways -c [optional projects config]
 ```
 
 ### Cloning the repository
