@@ -2,26 +2,31 @@
   "Noodle": {
     "contexts": ["eu", "us", "asia"],
     "namespace": "noodle-v1",
-    "releases": ["noodle"]
+    "releases": ["noodle"],
+    "maxRevisionsPerContext": 3
   },
   "Filehippo": {
     "contexts": ["eu", "us", "asia"],
     "namespace": "filehippo-v1",
-    "releases": ["filehippo-v1"]
+    "releases": ["filehippo-v1"],
+    "maxRevisionsPerContext": 3
   },
   "Digital Trends": {
     "contexts": ["eu", "us", "asia"],
     "namespace": "digitaltrends-v1",
-    "releases": ["digitaltrends-v1"]
+    "releases": ["digitaltrends-v1"],
+    "maxRevisionsPerContext": 3
   },
   "Binge": {
     "contexts": ["eu"],
     "namespace": "binge-v1",
-    "releases": ["binge-v3"]
+    "releases": ["binge-v3"],
+    "maxRevisionsPerContext": 3
   },
   "Atlas API (staging)": {
     "contexts": ["staging"],
     "namespace": "atlas-api",
-    "releases": ["atlas-api-release"]
+    "releases": ["atlas-api-release"],
+    "maxRevisionsPerContext": 1
   }
 }

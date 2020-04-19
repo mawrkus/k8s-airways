@@ -1,33 +1,46 @@
 const UI = require('./UI');
 const uiConfig = require('./config/ui-projects');
 
-const K8sCommandsForProjects = require('./K8sCommandsForProjects');
+const K8sCommands = require('./K8sCommands');
 const projects = require('./config/k8s-projects');
 
 const formatRevision = require('./helpers/formatRevision');
 
 const ui = new UI(uiConfig);
-const k8sCommands = new K8sCommandsForProjects();
+const k8sCommands = new K8sCommands();
 
-ui.on('item:select', async ({ list, index, value }) => {
-  const nextIndex = index + 1;
+let currentProject = null;
+let currentRelease = null;
+let currentPrettyRevision = null;
 
-  switch(list) {
+ui.on('item:select', async ({ listName, listIndex, itemValue }) => {
+  const nextListIndex = listIndex + 1;
+
+  /* eslint-disable no-case-declarations */
+  switch (listName) {
     case 'projects':
-      ui.showListLoader(nextIndex, 'Loading releases...');
-
-      const project = projects[value];
-      k8sCommands.setContexts(project.contexts);
-      k8sCommands.setNamespace(project.namespace);
-
-      ui.setListItems(nextIndex, project.releases);
+      currentProject = projects[itemValue];
+      ui.showListLoader(nextListIndex, 'Loading releases...');
+      ui.setListItems(nextListIndex, currentProject.releases);
       break;
 
     case 'releases':
-      ui.showListLoader(nextIndex, 'Loading revisions...');
+      currentRelease = itemValue;
+      ui.showListLoader(nextListIndex, 'Loading revisions...');
 
       try {
-        const allRevisions = await k8sCommands.listProjectRevisions(value);
+        const {
+          contexts: projectContexts,
+          namespace: projectNamespace,
+          maxRevisionsPerContext,
+        } = currentProject;
+
+        const allRevisions = await k8sCommands.listRevisionsForContexts(
+          projectContexts,
+          projectNamespace,
+          currentRelease,
+        );
+
         const prettyRevisions = [];
 
         allRevisions.forEach(({ context, revisions, error }) => {
@@ -41,36 +54,45 @@ ui.on('item:select', async ({ list, index, value }) => {
             return;
           }
 
-          [0, 1, 2]
-            .filter((n) => revisions[n])
-            .forEach((n) => prettyRevisions.push(
-              formatRevision(revisions[n], context)),
-            );
+          for (let n = 0; n < maxRevisionsPerContext && revisions[n]; n += 1) {
+            prettyRevisions.push(formatRevision(revisions[n], context));
+          }
         });
 
-        ui.setListItems(nextIndex, prettyRevisions);
-      } catch(e) {
-        ui.showListError(nextIndex, e);
+        ui.setListItems(nextListIndex, prettyRevisions);
+      } catch (e) {
+        ui.showListError(nextListIndex, e);
       }
       break;
 
     case 'revisions':
-      const matches = value.match(/\[([^\]]+)\] .+\((.+)\)$/);
+      currentPrettyRevision = itemValue;
+      const matches = currentPrettyRevision.match(/\[([^\]]+)\] .+\((.+)\)$/);
+
       if (!matches) {
-        ui.showListError(nextIndex, 'Unknown revision!');
+        ui.showListError(nextListIndex, 'Unknown revision!');
         return;
       }
 
-      const [, context, revision] = matches;
-      ui.showListLoader(nextIndex, `Rolling back to revision "${revision}"...`);
+      const { namespace: currentNamespace } = currentProject;
+      const [, currentContext, currentRevision] = matches;
+
+      ui.showListLoader(nextListIndex, `Rolling back to revision "${currentRevision}"...`);
 
       try {
-        k8sCommands.setContext(context);
-        await k8sCommands.rollback(revision);
+        await k8sCommands.rollback(
+          currentContext,
+          currentNamespace,
+          currentRelease,
+          currentRevision,
+        );
 
-        ui.showListMessage(nextIndex, `Rollback to revision "${revision}" completed in "${context}"!`);
-      } catch(e) {
-        ui.showListError(nextIndex, e);
+        ui.showListMessage(
+          nextListIndex,
+          `Rollback to revision "${currentRevision}" completed in "${currentContext}"!`,
+        );
+      } catch (e) {
+        ui.showListError(nextListIndex, e);
       }
       break;
 
