@@ -1,6 +1,10 @@
 const blessed = require('blessed');
 const EventEmitter = require('events');
 
+function upperFirst(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 class UI extends EventEmitter {
   constructor(config) {
     super();
@@ -133,39 +137,46 @@ class UI extends EventEmitter {
   /* widgets creation */
 
   create() {
-    this.screen = this.createScreen();
-    this.lists = this.createLists();
-    this.loader = this.createLoader();
-    this.messageBox = this.createErrorBox();
+    this.createScreen();
+    this.createLists();
+    this.createLoader();
+    this.createErrorBox();
   }
 
   // eslint-disable-next-line class-methods-use-this
   createScreen() {
-    const screen = blessed.screen({
+    this.screen = blessed.screen({
       title: '✈️ K8s Airways · Rollbacks made easy ✈️',
       width: '100%',
       autoPadding: true,
       smartCSR: true,
       debug: true,
     });
-
-    return screen;
   }
 
   createLists() {
-    return this.config.lists.map(({ name, left, width }, index) => {
-      const widget = this.createColumn({ name, left, width });
-      this.screen.append(widget);
-      return { name, widget, index };
+    this.config.columns.forEach(({ name, left, width }, index) => {
+      const { column, list } = this.createColumn({ name, left, width });
+      this.screen.append(column);
+      this.lists.push({ name, widget: list, index });
     });
   }
 
   createColumn(options) {
-    return blessed.List({
-      name: '?',
+    const listHeader = blessed.Box({
       top: 0,
       left: 0,
-      width: '25%',
+      height: 1,
+      width: '100%',
+      content: ` {bold}${upperFirst(options.name)}{/bold}`,
+      tags: true,
+    });
+
+    const list = blessed.List({
+      name: '?',
+      top: 1,
+      left: 0,
+      width: '100%',
       scrollable: true,
       mouse: true,
       keys: true,
@@ -188,18 +199,27 @@ class UI extends EventEmitter {
           },
         },
       },
+    });
+
+    const column = blessed.Box({
+      top: 0,
+      left: 0,
+      width: '25%',
       ...options,
     });
+
+    column.append(listHeader);
+    column.append(list);
+
+    return { column, list };
   }
 
-  // eslint-disable-next-line class-methods-use-this
   createLoader() {
-    return blessed.Loading();
+    this.loader = blessed.Loading();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   createErrorBox() {
-    return blessed.Message();
+    this.messageBox = blessed.Message();
   }
 }
 

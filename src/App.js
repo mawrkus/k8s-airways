@@ -167,7 +167,7 @@ class App {
   async loadNamespaces(listIndex, context) {
     const nextListIndex = listIndex + 1;
     this.currentContext = context;
-    this.ui.showListLoader(nextListIndex, `Loading "${context} namespaces...`);
+    this.ui.showListLoader(nextListIndex, `Loading "${context}" namespaces...`);
 
     try {
       const namespaces = await this.k8s.listNamespaces(context);

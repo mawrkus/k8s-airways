@@ -1,5 +1,5 @@
 {
-  "lists": [
+  "columns": [
     { "name": "contexts", "left": "0%", "width": "25%" },
     { "name": "namespaces", "left": "25%", "width": "25%" },
     { "name": "releases", "left": "50%", "width": "25%" },
