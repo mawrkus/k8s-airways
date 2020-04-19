@@ -21,12 +21,12 @@ class K8sCommands {
   }
 
   async listContexts() {
-    const stdout = await this.exec('kubectx');
+    const stdout = await this.exec('kubectl config get-contexts -o=name');
     return stdout.split('\n').filter(Boolean);
   }
 
   async listNamespaces(context) {
-    await this.exec(`kubectx ${context}`);
+    await this.exec(`kubectl config use-context ${context}`);
     const stdout = await this.exec('kubens');
     return stdout.split('\n').filter(Boolean);
   }
