@@ -37,7 +37,6 @@ Then execute:
 npm run start:projects
 ```
 
-
 ## ✈️  Contribute
 
 1. Fork it: `git clone https://github.com/mawrkus/k8s-airways.git`
