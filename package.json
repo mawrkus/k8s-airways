@@ -7,11 +7,21 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "start:projects": "node index.projects.js"
+    "start:projects": "node index.projects.js",
+    "lint": "eslint .",
+    "prerelease": "npm run lint",
+    "release": "npm version -m \"New version: %s\"",
+    "postrelease": "npm run push && npm publish",
+    "push": "git push origin master && git push origin --tags"
   },
   "dependencies": {
     "blessed": "^0.1.81",
     "dayjs": "^1.8.24",
     "shelljs": "^0.8.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
   }
 }

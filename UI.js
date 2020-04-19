@@ -40,9 +40,15 @@ class UI extends EventEmitter {
     }
 
     this.hideListLoader(index);
-    this.focusOnList(index);
 
-    const { widget } = this.lists[index];
+    const { name, widget } = this.lists[index];
+
+    if (!items.length) {
+      this.showListMessage(index, `No ${name}.`);
+      return;
+    }
+
+    this.focusOnList(index);
     widget.setItems(items);
     widget.select(0);
   }
@@ -65,6 +71,8 @@ class UI extends EventEmitter {
     const { widget } = this.lists[index];
     widget.clearItems();
     widget.append(this.messageBox);
+
+    this.render(); // required
   }
 
   showListError(index, error) {
@@ -106,13 +114,13 @@ class UI extends EventEmitter {
     this.screen.key(['left', 'S-tab'], () => this.focusOnList(this.currentFocusedList.index - 1));
     this.screen.key(['right', 'tab'], () => this.focusOnList(this.currentFocusedList.index + 1));
 
-    this.lists.forEach(({ name, widget }, index) => {
-      widget.on('click', () => this.focusOnList(index));
+    this.lists.forEach(({ name, widget }, listIndex) => {
+      widget.on('click', () => this.focusOnList(listIndex));
 
       widget.on('select', (element) => {
         if (element) {
           this.debug('UI.select', name, `"${element.content}"`);
-          this.emit('item:select', { list: name, index, value: element.content });
+          this.emit('item:select', { listName: name, listIndex, itemValue: element.content });
         }
       });
     });
@@ -136,8 +144,9 @@ class UI extends EventEmitter {
     this.messageBox = this.createErrorBox();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   createScreen() {
-		const screen = blessed.screen({
+    const screen = blessed.screen({
       title: '✈️ K8s Airways - Rollbacks made easy ✈️',
       width: '100%',
       autoPadding: true,
@@ -188,10 +197,12 @@ class UI extends EventEmitter {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   createLoader() {
     return blessed.Loading();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   createErrorBox() {
     return blessed.Message();
   }
