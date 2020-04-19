@@ -23,14 +23,15 @@
   },
   "files": [
     "bin/k8s-airways.js",
+    "src",
     "index.js",
     "README.md"
   ],
   "bin": "bin/k8s-airways.js",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "start:projects": "node index.projects.js",
+    "start": "node bin/k8s-airways.js",
+    "start:projects": "node bin/k8s-airways.js -c config/k8s-demo-projects.json",
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "",

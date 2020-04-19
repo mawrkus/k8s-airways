@@ -8,9 +8,9 @@ const path = require('path');
 const program = require('commander');
 const { version } = require('../package');
 
-const UI = require('../UI');
-const K8sCommands = require('../K8sCommands');
-const App = require('../App');
+const UI = require('../src/UI');
+const K8sCommands = require('../src/K8sCommands');
+const App = require('../src/App');
 
 // eslint-disable-next-line consistent-return
 function loadProjectsConfig(filePath) {

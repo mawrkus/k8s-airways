@@ -4,20 +4,20 @@ A terminal application to make Kubernetes rollbacks easy.
 
 ## ✈️  Installation & usage
 
-## Using npm
+### Using npm
 
 ```shell
 npm install -g k8s-airways
 k8s-airways -c [optional projects config]
 ```
 
-## Using npx
+### Using npx
 
 ```shell
 npx k8s-airways -c [optional projects config]
 ```
 
-## Cloning the repository
+### Cloning the repository
 
 ```shell
 git clone https://github.com/mawrkus/k8s-airways.git
@@ -33,7 +33,7 @@ npm run start
 
 To browse **projects** -> **releases** -> **revisions** :
 
-Configure your project(s) in `./config/k8s-projects.json` (see below).
+Configure your project(s) in `./config/k8s-demo-projects.json` (see below).
 
 Then execute:
 

@@ -1,10 +1,8 @@
 const blessed = require('blessed');
 const EventEmitter = require('events');
 
-const config = require('./config/ui');
-
 class UI extends EventEmitter {
-  constructor(options) {
+  constructor(config) {
     super();
 
     this.screen = null;
@@ -13,10 +11,7 @@ class UI extends EventEmitter {
     this.messageBox = null;
     this.currentFocusedList = null;
 
-    this.options = {
-      ...config,
-      ...options,
-    };
+    this.config = config;
 
     this.create();
     this.bindEvents();
@@ -158,7 +153,7 @@ class UI extends EventEmitter {
   }
 
   createLists() {
-    return this.options.lists.map(({ name, left, width }, index) => {
+    return this.config.lists.map(({ name, left, width }, index) => {
       const widget = this.createColumn({ name, left, width });
       this.screen.append(widget);
       return { name, widget, index };
@@ -177,19 +172,19 @@ class UI extends EventEmitter {
       vi: false,
       border: {
         type: 'line',
-        fg: this.options.colors.border.blur,
+        fg: this.config.colors.border.blur,
       },
       scrollbar: {
-        bg: this.options.colors.scrollbar.bg,
+        bg: this.config.colors.scrollbar.bg,
       },
       style: {
         item: {
-          fg: this.options.colors.item.fg,
+          fg: this.config.colors.item.fg,
         },
-        selected: this.options.colors.item.selected,
+        selected: this.config.colors.item.selected,
         focus: {
           border: {
-            fg: this.options.colors.border.focus,
+            fg: this.config.colors.border.focus,
           },
         },
       },
