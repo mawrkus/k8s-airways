@@ -1,7 +1,7 @@
 {
   "name": "k8s-airways",
   "version": "0.1.0",
-  "description": "A terminal application to make K8s rollbacks easy",
+  "description": "A terminal application to make Helm rollbacks easy",
   "author": "mawrkus <web@sparring-partner.be>",
   "license": "MIT",
   "homepage": "https://github.com/mawrkus/k8s-airways",
@@ -13,10 +13,10 @@
     "url": "git://github.com/mawrkus/k8s-airways.git"
   },
   "keywords": [
-    "k8s",
-    "kubernetes",
+    "helm",
     "rollback",
-    "helm"
+    "k8s",
+    "kubernetes"
   ],
   "engines": {
     "node": ">= 10"

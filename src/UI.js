@@ -142,7 +142,7 @@ class UI extends EventEmitter {
   // eslint-disable-next-line class-methods-use-this
   createScreen() {
     this.screen = blessed.screen({
-      title: '✈️ K8s Airways · Rollbacks made easy ✈️',
+      title: '✈️ K8s Airways · Helm rollbacks made easy ✈️',
       width: '100%',
       autoPadding: true,
       smartCSR: true,
@@ -178,6 +178,7 @@ class UI extends EventEmitter {
       mouse: true,
       keys: true,
       vi: false,
+      tags: true,
       border: {
         type: 'line',
         fg: this.config.colors.border.blur,

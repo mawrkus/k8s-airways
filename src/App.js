@@ -6,7 +6,7 @@ function formatRevision(revisionData, context) {
   const date = updated ? dayjs(updated).format('ddd DD/MM/YYYY HH:mm:ss') : '?';
 
   return context
-    ? `[${context}] ${date} -> v${appVersion || '?'} (${revision})`
+    ? `{bold}[${context}]{/bold} ${date} -> v${appVersion || '?'} (${revision})`
     : `${date} -> v${appVersion || '?'} (${revision})`;
 }
 
@@ -43,6 +43,8 @@ class App {
     }
   }
 
+  /* project app */
+
   onProjectItemSelected({ itemsName, listIndex, itemValue }) {
     switch (itemsName) {
       case 'projects':
@@ -50,7 +52,7 @@ class App {
         break;
 
       case 'services':
-        this.loadProjectRevisions(listIndex, itemValue);
+        this.loadProjectVersions(listIndex, itemValue);
         break;
 
       case 'revisions':
@@ -72,14 +74,14 @@ class App {
     this.ui.setListItems(nextListIndex, releasesList);
   }
 
-  async loadProjectRevisions(listIndex, serviceName) {
+  async loadProjectVersions(listIndex, serviceName) {
     const nextListIndex = listIndex + 1;
     const [namespace, release] = this.currentProject.releases[serviceName].split(':');
 
     this.currentNamespace = namespace;
     this.currentRelease = release;
 
-    this.ui.showListLoader(nextListIndex, `Loading "${serviceName}" revisions...`);
+    this.ui.showListLoader(nextListIndex, `Loading "${serviceName}" versions...`);
 
     try {
       const {
@@ -133,7 +135,7 @@ class App {
     try {
       await this.k8s.rollback(
         context,
-        this.currentProject.namespace,
+        this.currentNamespace,
         this.currentRelease,
         revision,
       );
@@ -146,6 +148,8 @@ class App {
       this.ui.showListError(nextListIndex, error);
     }
   }
+
+  /* generic app */
 
   onItemSelected({ itemsName, listIndex, itemValue }) {
     switch (itemsName) {

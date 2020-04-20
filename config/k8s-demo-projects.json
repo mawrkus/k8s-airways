@@ -11,7 +11,7 @@
     "contexts": ["eu", "us", "asia"],
     "releases": {
       "filehippo.com": "filehippo-v1:filehippo-v1",
-      "fhp apisoba": "fhp-apisoba-v3:fhp-apisoba-v3-release"
+      "apisoba fhp": "fhp-apisoba-v3:fhp-apisoba-v3-release"
     },
     "maxRevisionsPerContext": 3
   },
@@ -19,7 +19,7 @@
     "contexts": ["eu", "us", "asia"],
     "releases": {
       "downloads.digitaltrends.com": "digitaltrends-v1:digitaltrends-v1",
-      "dgt apisoba": "dgt-apisoba-v3:dgt-apisoba-v3-release"
+      "apisoba dgt": "dgt-apisoba-v3:dgt-apisoba-v3-release"
     },
     "maxRevisionsPerContext": 3
   },
@@ -28,12 +28,12 @@
     "releases": {
       "binge.co": "binge-v1:binge-v3"
     },
-    "maxRevisionsPerContext": 3
+    "maxRevisionsPerContext": 2
   },
   "Atlas API (staging)": {
     "contexts": ["staging"],
     "releases": {
-      "Atlas API": "atlas-api:atlas-api-release"
+      "atlas api": "atlas-api:atlas-api-release"
     },
     "maxRevisionsPerContext": 1
   }

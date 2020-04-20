@@ -1,12 +1,12 @@
 # K8s Airways
 
-A terminal application to make Kubernetes rollbacks easy.
+A terminal application to make Helm rollbacks easy.
 
 ## ✈️  Requirements
 
 - [Node.js](https://nodejs.org/) >= 10
-- [kubectl](https://kubernetes.io/docs/reference/kubectl/overview)
 - [Helm](https://helm.sh/) >= 3
+- [kubectl](https://kubernetes.io/docs/reference/kubectl/overview)
 
 ## ✈️  Installation & launch
 
@@ -60,8 +60,10 @@ It's a simple JSON file containing an entry for each project, e.g.:
 {
   "Project Name": {
     "contexts": ["europe", "usa", "asia"],
-    "namespace": "my-namespace",
-    "releases": ["my-blue-release", "my-green-release"],
+    "releases": {
+      "My service name": "my-namespace:my-release",
+      "My other service name": "my-other-namespace:my-other-release"
+    },
     "maxRevisionsPerContext": 3
   }
 }
