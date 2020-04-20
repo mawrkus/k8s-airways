@@ -8,7 +8,7 @@ A terminal application to make Kubernetes rollbacks easy.
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview)
 - [Helm](https://helm.sh/) >= 3
 
-## ✈️  Installation & usage
+## ✈️  Installation & launch
 
 ### Using npx
 
@@ -29,25 +29,30 @@ k8s-airways -c [optional projects config]
 git clone https://github.com/mawrkus/k8s-airways.git
 cd k8s-airways
 npm install
-```
-
-To browse **contexts** -> **namespaces** -> **releases** -> **revisions** :
-
-```shell
 npm run start
 ```
 
-To browse **projects** -> **releases** -> **revisions** :
-
-Configure your project(s) in `./config/k8s-demo-projects.json` (see below).
-
-Then execute:
+or
 
 ```shell
 npm run start:projects
 ```
 
-### The projects config file
+## ✈️  Usage
+
+⚠️ **Be careful, once clicked on the revision in the last column, the rollback will be triggered without any confirmation!**
+
+- Without providing a config file for your projects, you can browse:
+
+  **contexts** -> **namespaces** -> **releases** -> **revisions**
+
+- When providing a config file, you can browse:
+
+  **projects** -> **releases** -> **revisions**
+
+If the repository was cloned, you can configure your project(s) in `./config/k8s-demo-projects.json`.
+
+### The config file
 
 It's a simple JSON file containing an entry for each project, e.g.:
 
