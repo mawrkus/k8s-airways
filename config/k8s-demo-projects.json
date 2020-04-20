@@ -33,7 +33,7 @@
   "Atlas API (staging)": {
     "contexts": ["staging"],
     "releases": {
-      "atlas-api": "atlas-api:atlas-api-release"
+      "Atlas API": "atlas-api:atlas-api-release"
     },
     "maxRevisionsPerContext": 1
   }

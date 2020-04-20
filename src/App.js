@@ -72,14 +72,14 @@ class App {
     this.ui.setListItems(nextListIndex, releasesList);
   }
 
-  async loadProjectRevisions(listIndex, projectRelease) {
+  async loadProjectRevisions(listIndex, serviceName) {
     const nextListIndex = listIndex + 1;
-    const [namespace, release] = this.currentProject.releases[projectRelease].split(':');
+    const [namespace, release] = this.currentProject.releases[serviceName].split(':');
 
     this.currentNamespace = namespace;
     this.currentRelease = release;
 
-    this.ui.showListLoader(nextListIndex, `Loading "${namespace}:${release}" revisions...`);
+    this.ui.showListLoader(nextListIndex, `Loading "${serviceName}" revisions...`);
 
     try {
       const {
