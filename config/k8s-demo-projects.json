@@ -1,37 +1,40 @@
 {
   "Noodle": {
     "contexts": ["eu", "us", "asia"],
-    "releases": ["noodle-v1:noodle"],
+    "releases": {
+      "softonic.com": "noodle-v1:noodle",
+      "apisoba": "apisoba-v3:apisoba-v3-release"
+    },
     "maxRevisionsPerContext": 3
   },
   "Filehippo": {
     "contexts": ["eu", "us", "asia"],
-    "releases": ["filehippo-v1:filehippo-v1"],
+    "releases": {
+      "filehippo.com": "filehippo-v1:filehippo-v1",
+      "fhp apisoba": "fhp-apisoba-v3:fhp-apisoba-v3-release"
+    },
     "maxRevisionsPerContext": 3
   },
   "Digital Trends": {
     "contexts": ["eu", "us", "asia"],
-    "releases": ["digitaltrends-v1:digitaltrends-v1"],
+    "releases": {
+      "downloads.digitaltrends.com": "digitaltrends-v1:digitaltrends-v1",
+      "dgt apisoba": "dgt-apisoba-v3:dgt-apisoba-v3-release"
+    },
     "maxRevisionsPerContext": 3
   },
   "Binge": {
     "contexts": ["eu"],
-    "releases": ["binge-v1:binge-v3"],
-    "maxRevisionsPerContext": 3
-  },
-  "CPI services": {
-    "contexts": ["eu", "us", "asia"],
-    "releases": [
-      "sft-cpi-api-v2:sft-cpi-api-v2",
-      "sft-cpi-consumer:sft-cpi-consumer",
-      "fhp-cpi-api-v2:fhp-cpi-api-v2",
-      "fhp-cpi-consumer:fhp-cpi-consumer"
-    ],
+    "releases": {
+      "binge.co": "binge-v1:binge-v3"
+    },
     "maxRevisionsPerContext": 3
   },
   "Atlas API (staging)": {
     "contexts": ["staging"],
-    "releases": ["atlas-api:atlas-api-release"],
+    "releases": {
+      "atlas-api": "atlas-api:atlas-api-release"
+    },
     "maxRevisionsPerContext": 1
   }
 }

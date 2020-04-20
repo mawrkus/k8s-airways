@@ -7,8 +7,8 @@
       "width": "15%"
      },
     {
-      "name": "Namespace:Release",
-      "itemsName": "releases",
+      "name": "Services",
+      "itemsName": "services",
       "left": "15%",
       "width": "35%"
      },
