@@ -43,13 +43,13 @@ class App {
     }
   }
 
-  onProjectItemSelected({ listName, listIndex, itemValue }) {
-    switch (listName) {
+  onProjectItemSelected({ itemsName, listIndex, itemValue }) {
+    switch (itemsName) {
       case 'projects':
         this.loadProjectReleases(listIndex, itemValue);
         break;
 
-      case 'releases':
+      case 'services':
         this.loadProjectRevisions(listIndex, itemValue);
         break;
 
@@ -64,26 +64,32 @@ class App {
 
   async loadProjectReleases(listIndex, projectName) {
     const nextListIndex = listIndex + 1;
+
     this.currentProject = this.projectsConfig[projectName];
+    const releasesList = Object.keys(this.currentProject.releases);
+
     this.ui.showListLoader(nextListIndex, `Loading "${projectName}" releases...`);
-    this.ui.setListItems(nextListIndex, this.currentProject.releases);
+    this.ui.setListItems(nextListIndex, releasesList);
   }
 
-  async loadProjectRevisions(listIndex, release) {
+  async loadProjectRevisions(listIndex, serviceName) {
     const nextListIndex = listIndex + 1;
+    const [namespace, release] = this.currentProject.releases[serviceName].split(':');
+
+    this.currentNamespace = namespace;
     this.currentRelease = release;
-    this.ui.showListLoader(nextListIndex, `Loading "${release}" revisions...`);
+
+    this.ui.showListLoader(nextListIndex, `Loading "${serviceName}" revisions...`);
 
     try {
       const {
         contexts: projectContexts,
-        namespace: projectNamespace,
         maxRevisionsPerContext,
       } = this.currentProject;
 
       const allRevisions = await this.k8s.listRevisionsForContexts(
         projectContexts,
-        projectNamespace,
+        namespace,
         release,
       );
 
@@ -141,8 +147,8 @@ class App {
     }
   }
 
-  onItemSelected({ listName, listIndex, itemValue }) {
-    switch (listName) {
+  onItemSelected({ itemsName, listIndex, itemValue }) {
+    switch (itemsName) {
       case 'contexts':
         this.loadNamespaces(listIndex, itemValue);
         break;

@@ -1,32 +1,40 @@
 {
   "Noodle": {
     "contexts": ["eu", "us", "asia"],
-    "namespace": "noodle-v1",
-    "releases": ["noodle"],
+    "releases": {
+      "softonic.com": "noodle-v1:noodle",
+      "apisoba": "apisoba-v3:apisoba-v3-release"
+    },
     "maxRevisionsPerContext": 3
   },
   "Filehippo": {
     "contexts": ["eu", "us", "asia"],
-    "namespace": "filehippo-v1",
-    "releases": ["filehippo-v1"],
+    "releases": {
+      "filehippo.com": "filehippo-v1:filehippo-v1",
+      "fhp apisoba": "fhp-apisoba-v3:fhp-apisoba-v3-release"
+    },
     "maxRevisionsPerContext": 3
   },
   "Digital Trends": {
     "contexts": ["eu", "us", "asia"],
-    "namespace": "digitaltrends-v1",
-    "releases": ["digitaltrends-v1"],
+    "releases": {
+      "downloads.digitaltrends.com": "digitaltrends-v1:digitaltrends-v1",
+      "dgt apisoba": "dgt-apisoba-v3:dgt-apisoba-v3-release"
+    },
     "maxRevisionsPerContext": 3
   },
   "Binge": {
     "contexts": ["eu"],
-    "namespace": "binge-v1",
-    "releases": ["binge-v3"],
+    "releases": {
+      "binge.co": "binge-v1:binge-v3"
+    },
     "maxRevisionsPerContext": 3
   },
   "Atlas API (staging)": {
     "contexts": ["staging"],
-    "namespace": "atlas-api",
-    "releases": ["atlas-api-release"],
+    "releases": {
+      "Atlas API": "atlas-api:atlas-api-release"
+    },
     "maxRevisionsPerContext": 1
   }
 }
