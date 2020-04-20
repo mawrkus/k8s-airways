@@ -43,8 +43,8 @@ class App {
     }
   }
 
-  onProjectItemSelected({ listName, listIndex, itemValue }) {
-    switch (listName) {
+  onProjectItemSelected({ itemsName, listIndex, itemValue }) {
+    switch (itemsName) {
       case 'projects':
         this.loadProjectReleases(listIndex, itemValue);
         break;
@@ -69,21 +69,24 @@ class App {
     this.ui.setListItems(nextListIndex, this.currentProject.releases);
   }
 
-  async loadProjectRevisions(listIndex, release) {
+  async loadProjectRevisions(listIndex, namespaceAndRelease) {
     const nextListIndex = listIndex + 1;
+    const [namespace, release] = namespaceAndRelease.split(':');
+
+    this.currentNamespace = namespace;
     this.currentRelease = release;
+
     this.ui.showListLoader(nextListIndex, `Loading "${release}" revisions...`);
 
     try {
       const {
         contexts: projectContexts,
-        namespace: projectNamespace,
         maxRevisionsPerContext,
       } = this.currentProject;
 
       const allRevisions = await this.k8s.listRevisionsForContexts(
         projectContexts,
-        projectNamespace,
+        namespace,
         release,
       );
 
@@ -141,8 +144,8 @@ class App {
     }
   }
 
-  onItemSelected({ listName, listIndex, itemValue }) {
-    switch (listName) {
+  onItemSelected({ itemsName, listIndex, itemValue }) {
+    switch (itemsName) {
       case 'contexts':
         this.loadNamespaces(listIndex, itemValue);
         break;

@@ -1,10 +1,6 @@
 const blessed = require('blessed');
 const EventEmitter = require('events');
 
-function upperFirst(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 class UI extends EventEmitter {
   constructor(config) {
     super();
@@ -40,10 +36,10 @@ class UI extends EventEmitter {
 
     this.hideListLoader(index);
 
-    const { name, widget } = this.lists[index];
+    const { itemsName, widget } = this.lists[index];
 
     if (!items.length) {
-      this.showListMessage(index, `No ${name}.`);
+      this.showListMessage(index, `No ${itemsName}.`);
       return;
     }
 
@@ -113,13 +109,13 @@ class UI extends EventEmitter {
     this.screen.key(['left', 'S-tab'], () => this.focusOnList(this.currentFocusedList.index - 1));
     this.screen.key(['right', 'tab'], () => this.focusOnList(this.currentFocusedList.index + 1));
 
-    this.lists.forEach(({ name, widget }, listIndex) => {
+    this.lists.forEach(({ itemsName, widget }, listIndex) => {
       widget.on('click', () => this.focusOnList(listIndex));
 
       widget.on('select', (element) => {
         if (element) {
-          this.debug('UI.select', name, `"${element.content}"`);
-          this.emit('item:select', { listName: name, listIndex, itemValue: element.content });
+          this.debug('UI.select', itemsName, `"${element.content}"`);
+          this.emit('item:select', { itemsName, listIndex, itemValue: element.content });
         }
       });
     });
@@ -155,10 +151,11 @@ class UI extends EventEmitter {
   }
 
   createColumns() {
-    this.config.columns.forEach(({ name, left, width }, index) => {
+    this.config.columns.forEach((options, index) => {
+      const { name, left, width } = options;
       const { column, list } = this.createColumn({ name, left, width });
       this.screen.append(column);
-      this.lists.push({ name, widget: list, index });
+      this.lists.push({ ...options, widget: list, index });
     });
   }
 
@@ -168,7 +165,7 @@ class UI extends EventEmitter {
       left: 0,
       height: 1,
       width: '100%',
-      content: ` {bold}${upperFirst(options.name)}{/bold}`,
+      content: ` {bold}${options.name}{/bold}`,
       tags: true,
     });
 

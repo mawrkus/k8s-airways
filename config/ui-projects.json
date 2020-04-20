@@ -1,9 +1,29 @@
 {
   "columns": [
-    { "name": "projects", "left": "0%", "width": "20%" },
-    { "name": "releases", "left": "20%", "width": "20%" },
-    { "name": "revisions", "left": "40%", "width": "40%" },
-    { "name": "rollbacks", "left": "80%", "width": "20%" }
+    {
+      "name": "Projects",
+      "itemsName": "projects",
+      "left": "0%",
+      "width": "15%"
+     },
+    {
+      "name": "Namespace:Release",
+      "itemsName": "releases",
+      "left": "15%",
+      "width": "35%"
+     },
+    {
+      "name": "Revisions",
+      "itemsName": "revisions",
+      "left": "50%",
+      "width": "35%"
+     },
+    {
+      "name": "Rollback info",
+      "itemsName": "rollbacks",
+      "left": "85%",
+      "width": "15%"
+    }
   ],
   "colors": {
     "border": {
