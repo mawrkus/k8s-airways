@@ -49,7 +49,7 @@ class App {
         this.loadProjectReleases(listIndex, itemValue);
         break;
 
-      case 'releases':
+      case 'services':
         this.loadProjectRevisions(listIndex, itemValue);
         break;
 
