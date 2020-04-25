@@ -23,6 +23,7 @@
   },
   "files": [
     "bin/k8s-airways.js",
+    "config",
     "src",
     "index.js",
     "README.md"
