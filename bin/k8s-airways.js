@@ -15,7 +15,7 @@ const App = require('../src/App');
 // eslint-disable-next-line consistent-return
 function loadProjectsConfig(filePath) {
   try {
-    const json = fs.readFileSync(path.join(process.cwd(), filePath), 'utf8');
+    const json = fs.readFileSync(path.resolve(process.cwd(), filePath), 'utf8');
     return JSON.parse(json);
   } catch (e) {
     console.error(`Error while loading projects config file "${filePath}"!`);
