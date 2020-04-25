@@ -40,7 +40,7 @@ npm run start:projects
 
 ## ✈️  Usage
 
-⚠️ **BE CAREFUL: once clicked on the revision in the last column, the rollback will be triggered without any confirmation.** ⚠️
+⚠️ **BE CAREFUL: once clicked on the revision in the last column, the rollback will be triggered without any confirmation.**
 
 - Without providing a config file for your projects, you can browse:
 
