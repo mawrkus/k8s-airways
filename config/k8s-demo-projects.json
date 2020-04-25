@@ -1,40 +1,17 @@
 {
-  "Noodle": {
-    "contexts": ["eu", "us", "asia"],
+  "Project name": {
+    "contexts": ["europe", "usa", "asia"],
     "releases": {
-      "softonic.com": "noodle-v1:noodle",
-      "apisoba": "apisoba-v3:apisoba-v3-release"
+      "Service name": "my-namespace:my-release"
     },
     "maxRevisionsPerContext": 3
   },
-  "Filehippo": {
-    "contexts": ["eu", "us", "asia"],
+  "Other project name": {
+    "contexts": ["europe"],
     "releases": {
-      "filehippo.com": "filehippo-v1:filehippo-v1",
-      "apisoba fhp": "fhp-apisoba-v3:fhp-apisoba-v3-release"
+      "Other service name": "my-other-namespace:my-other-release",
+      "Additional service name": "my-additional-namespace:my-additional-release"
     },
     "maxRevisionsPerContext": 3
-  },
-  "Digital Trends": {
-    "contexts": ["eu", "us", "asia"],
-    "releases": {
-      "downloads.digitaltrends.com": "digitaltrends-v1:digitaltrends-v1",
-      "apisoba dgt": "dgt-apisoba-v3:dgt-apisoba-v3-release"
-    },
-    "maxRevisionsPerContext": 3
-  },
-  "Binge": {
-    "contexts": ["eu"],
-    "releases": {
-      "binge.co": "binge-v1:binge-v3"
-    },
-    "maxRevisionsPerContext": 2
-  },
-  "Atlas API (staging)": {
-    "contexts": ["staging"],
-    "releases": {
-      "atlas api": "atlas-api:atlas-api-release"
-    },
-    "maxRevisionsPerContext": 1
   }
 }

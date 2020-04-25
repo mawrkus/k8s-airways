@@ -40,7 +40,7 @@ npm run start:projects
 
 ## ✈️  Usage
 
-⚠️ **Be careful, once clicked on the revision in the last column, the rollback will be triggered without any confirmation!**
+⚠️ **BE CAREFUL: once clicked on the revision in the last column, the rollback will be triggered without any confirmation.** ⚠️
 
 - Without providing a config file for your projects, you can browse:
 
@@ -58,13 +58,16 @@ It's a simple JSON file containing an entry for each project, e.g.:
 
 ```json
 {
-  "Project Name": {
+  "Project name": {
     "contexts": ["europe", "usa", "asia"],
     "releases": {
       "My service name": "my-namespace:my-release",
       "My other service name": "my-other-namespace:my-other-release"
     },
     "maxRevisionsPerContext": 3
+  },
+  "Other project name": {
+    // ...
   }
 }
 ```
