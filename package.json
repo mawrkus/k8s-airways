@@ -1,6 +1,6 @@
 {
   "name": "k8s-airways",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A terminal application to make Helm rollbacks easy",
   "author": "mawrkus <web@sparring-partner.be>",
   "license": "MIT",
