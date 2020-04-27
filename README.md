@@ -67,7 +67,6 @@ It's a simple JSON file containing an entry for each project, e.g.:
     "maxRevisionsPerContext": 3
   },
   "Other project name": {
-    // ...
   }
 }
 ```
