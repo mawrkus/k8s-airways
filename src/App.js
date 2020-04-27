@@ -55,7 +55,7 @@ class App {
         this.loadProjectVersions(listIndex, itemValue);
         break;
 
-      case 'revisions':
+      case 'versions':
         this.rollbackProject(listIndex, itemValue);
         break;
 
@@ -121,7 +121,8 @@ class App {
 
   async rollbackProject(listIndex, prettyRevision) {
     const nextListIndex = listIndex + 1;
-    const matches = prettyRevision.match(/\[([^\]]+)\] .+\((.+)\)$/);
+    const matches = prettyRevision.match(/.*\[([^\]]+)\].*\((.+)\)$/);
+    this.ui.debug('rollbackProject', `"${prettyRevision}"`, matches);
 
     if (!matches) {
       this.ui.showListError(nextListIndex, 'Unknown revision!');
