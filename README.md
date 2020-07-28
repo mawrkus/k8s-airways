@@ -2,6 +2,8 @@
 
 A terminal application to make Helm rollbacks easy.
 
+<img src="docs/k8s-airways-screenshot.png" alt="K8s Airways screenshot" />
+
 ## ✈️  Requirements
 
 - [Node.js](https://nodejs.org/) >= 10
